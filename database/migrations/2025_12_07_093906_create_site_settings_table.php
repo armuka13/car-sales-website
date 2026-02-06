@@ -8,15 +8,17 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('site_settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone');
-            $table->string('image');
-            $table->string('description');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('site_settings')) {
+            Schema::create('site_settings', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('email');
+                $table->string('phone');
+                $table->string('image');
+                $table->string('description');
+                $table->timestamps();
+            });
+        }
     }
 
     public function down()

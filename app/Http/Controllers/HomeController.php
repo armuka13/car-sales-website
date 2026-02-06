@@ -27,4 +27,10 @@ class HomeController extends Controller
         $cars = Car::whereIn('id', $ids)->get();
         return response()->json($cars);
     }
+    
+    public function show(Car $car)
+    {
+        $settings = SiteSetting::first();
+        return view('car-details', compact('car', 'settings'));
+    }
 }

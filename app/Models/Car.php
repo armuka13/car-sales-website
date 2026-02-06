@@ -8,7 +8,7 @@ class Car extends Model
     protected $fillable = [
         'brand', 'model', 'year', 'price', 'image', 'images',
         'description', 'condition', 'mileage',
-        'transmission', 'fuel_type', 'performance', 'consumption', 
+        'transmission', 'fuel_type', 'category', 'performance', 'consumption', 
         'number_of_seats', 'color'
     ];
     protected $casts = [

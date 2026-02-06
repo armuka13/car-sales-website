@@ -23,27 +23,7 @@
     </div>
 </div>
 
-<!-- Car Details Modal (same as home page) -->
-<div class="modal fade" id="carModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content bg-dark text-light">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle"></h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Content will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <div class="w-100 text-center">
-                    <p class="mb-2"><strong>Contact us to schedule a test drive:</strong></p>
-                    <p class="mb-1"><i class="fas fa-envelope"></i> {{ $settings->email }}</p>
-                    <p class="mb-0"><i class="fas fa-phone"></i> {{ $settings->phone }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 @endsection
 
 @section('scripts')
@@ -121,9 +101,9 @@ $(document).ready(function() {
                             
                             <p class="card-text">${car.description.substring(0, 100)}${car.description.length > 100 ? '...' : ''}</p>
                             
-                            <button class="btn btn-primary w-100 view-details" data-car-id="${car.id}">
+                            <a href="/cars/${car.id}" class="btn btn-primary w-100">
                                 View Details
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -146,88 +126,17 @@ $(document).ready(function() {
             });
         });
         
-        // View details
-        $('.view-details').on('click', function() {
-            const carId = $(this).data('car-id');
-            const car = cars.find(c => c.id == carId);
-            showCarDetails(car);
-        });
+
     }
-    
+
     function removeFavorite(carId) {
         let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
         favorites = favorites.filter(id => id != carId);
         localStorage.setItem('favorites', JSON.stringify(favorites));
-        updateFavoritesCount();
-    }
-    
-    function showCarDetails(car) {
-        $('#modalTitle').text(`${car.brand} ${car.model} (${car.year})`);
-        
-        // Build image carousel
-        let carouselHtml = '';
-        const allImages = [];
-        
-        if (car.image) {
-            allImages.push(car.image);
+        // Try to update count if function exists
+        if (typeof updateFavoritesCount === 'function') {
+            updateFavoritesCount();
         }
-        
-        if (car.images && car.images.length > 0) {
-            allImages.push(...car.images);
-        }
-        
-        if (allImages.length > 0) {
-            carouselHtml = `
-                <div id="carImageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        ${allImages.map((img, index) => `
-                            <button type="button" data-bs-target="#carImageCarousel" data-bs-slide-to="${index}" 
-                                ${index === 0 ? 'class="active" aria-current="true"' : ''} 
-                                aria-label="Slide ${index + 1}"></button>
-                        `).join('')}
-                    </div>
-                    <div class="carousel-inner">
-                        ${allImages.map((img, index) => `
-                            <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                                <img src="/storage/${img}" class="d-block w-100" alt="${car.brand} ${car.model} - Image ${index + 1}">
-                            </div>
-                        `).join('')}
-                    </div>
-                    ${allImages.length > 1 ? `
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    ` : ''}
-                </div>
-            `;
-        } else {
-            carouselHtml = '<div class="bg-secondary p-5 text-center mb-3"><i class="fas fa-car fa-5x text-white"></i></div>';
-        }
-        
-        $('#modalBody').html(`
-            ${carouselHtml}
-            <p class="price-tag mb-3">$${Number(car.price).toLocaleString()}</p>
-            <div class="mb-3">
-                <span class="badge bg-primary badge-custom">${car.condition.charAt(0).toUpperCase() + car.condition.slice(1)}</span>
-                <span class="badge bg-info badge-custom">${car.year}</span>
-                <span class="badge bg-warning text-dark badge-custom">${car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1)}</span>
-                <span class="badge bg-success badge-custom">${car.fuel_type.charAt(0).toUpperCase() + car.fuel_type.slice(1)}</span>
-                ${car.performance ? `<span class="badge bg-secondary badge-custom">${car.performance + ' kW ('+ Math.ceil(car.performance * 1.34)+' HP)'}</span>` : ''}
-                ${car.consumption ? `<span class="badge bg-danger badge-custom">${car.consumption + ' l/100km'}</span>` : ''}
-                ${car.number_of_seats ? `<span class="badge bg-dark badge-custom">${car.number_of_seats} Seats</span>` : ''}
-                ${car.color ? `<span class="badge bg-light badge-custom text-dark">${car.color.charAt(0).toUpperCase() + car.color.slice(1)}</span>` : ''}
-            </div>
-            ${car.mileage ? `<p><strong>Mileage:</strong> ${Number(car.mileage).toLocaleString()} km</p>` : ''}
-            <p><strong>Description:</strong></p>
-            <p>${car.description}</p>
-        `);
-        
-        $('#carModal').modal('show');
     }
 });
 </script>

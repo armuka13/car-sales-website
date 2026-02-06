@@ -10,7 +10,7 @@
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #0f4c5c;
+            background-color: #2a333dff;
         }
         .navbar-brand { font-weight: bold; font-size: 1.5rem; }
         .car-card { transition: transform 0.3s; margin-bottom: 30px; }

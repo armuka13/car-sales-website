@@ -6,7 +6,7 @@
 <div class="container my-5 text-white">
     <h2 class="mb-4">Add New Car</h2>
     
-    <div class="card">
+    <div class="card bg-dark text-white">
         <div class="card-body">
             <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf

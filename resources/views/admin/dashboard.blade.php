@@ -22,17 +22,15 @@
     </div>
     @endif
     
-    <div class="card">
+    <div class="card bg-dark text-white">
         <div class="card-body">
-            <table class="table table-hover">
+            <table class="table table-dark table-hover text-white">
                 <thead>
                     <tr>
                         <th>Image</th>
                         <th>Brand</th>
                         <th>Model</th>
-                        <th>Year</th>
                         <th>Price</th>
-                        <th>Condition</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -50,9 +48,7 @@
                         </td>
                         <td>{{ $car->brand }}</td>
                         <td>{{ $car->model }}</td>
-                        <td>{{ $car->year }}</td>
                         <td>${{ number_format($car->price, 0) }}</td>
-                        <td><span class="badge bg-primary">{{ ucfirst($car->condition) }}</span></td>
                         <td>
                             <a href="{{ route('admin.cars.edit', $car) }}" class="btn btn-sm btn-warning">
                                 <i class="fas fa-edit"></i>
@@ -76,15 +72,41 @@
         </div>
     </div>
 </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this car? This action cannot be undone.
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete Car</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
 $(document).ready(function() {
+    let deleteCarId = null;
+
     $('.delete-btn').on('click', function() {
-        if (confirm('Are you sure you want to delete this car?')) {
-            const id = $(this).data('id');
-            $('#delete-form-' + id).submit();
+        deleteCarId = $(this).data('id');
+        $('#deleteModal').modal('show');
+    });
+
+    $('#confirmDelete').on('click', function() {
+        if (deleteCarId) {
+            $('#delete-form-' + deleteCarId).submit();
         }
     });
 });

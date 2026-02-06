@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/favorites', [HomeController::class, 'favorites'])->name('favorites');
 Route::post('/api/cars/favorites', [HomeController::class, 'getFavorites'])->name('api.favorites');
+Route::get('/cars/{car}', [HomeController::class, 'show'])->name('cars.show');
 
 Auth::routes(['register' => false]); // Disable registration
 

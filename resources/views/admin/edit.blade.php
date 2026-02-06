@@ -6,8 +6,8 @@
 <div class="container my-5 text-white">
     <h2 class="mb-4">Edit Car</h2>
     
-    <div class="card">
-        <div class="card-body" style="background-color:white;">
+    <div class="card bg-dark text-white">
+        <div class="card-body">
             <form action="{{ route('admin.cars.update', $car) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
