@@ -173,7 +173,6 @@
                         <li class="nav-item favorites-badge">
                         <a class="nav-link" href="{{ route('favorites') }}">
                             <i class="fas fa-heart"></i> Favorites
-                            <span id="favoritesCount">0</span>
                         </a>
                     </li>
                     @endguest
@@ -221,7 +220,7 @@
             const count = favorites.length;
             $('#favoritesCount').text(count);
             if (count > 0) {
-                $('#favoritesCount').css('display', 'flex');
+                $('#favoritesCount').css('display', 'inline-block');
             } else {
                 $('#favoritesCount').hide();
             }

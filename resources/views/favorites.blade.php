@@ -74,7 +74,7 @@ $(document).ready(function() {
                 <div class="col-md-4 mb-4">
                     <div class="card car-card bg-dark">
                         ${car.image 
-                            ? `<img src="/storage/${car.image}" class="card-img-top car-image" alt="${car.brand} ${car.model}">`
+                            ? `<img src="${car.image.startsWith('http') ? car.image : '/storage/' + car.image}" class="card-img-top car-image" alt="${car.brand} ${car.model}">`
                             : `<div class="car-image bg-secondary d-flex align-items-center justify-content-center">
                                 <i class="fas fa-car fa-5x text-white"></i>
                                </div>`

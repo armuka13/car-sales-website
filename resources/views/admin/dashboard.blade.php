@@ -29,8 +29,7 @@
                     <tr>
                         <th>Image</th>
                         <th>Brand</th>
-                        <th>Model</th>
-                        <th>Price</th>
+                        <th>ID</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -39,7 +38,7 @@
                     <tr>
                         <td>
                             @if($car->image)
-                                <img src="{{ asset('storage/' . $car->image) }}" width="60" height="60" style="object-fit: cover;">
+                                <img src="{{ Str::startsWith($car->image, 'http') ? $car->image : asset('storage/' . $car->image) }}" width="60" height="60" style="object-fit: cover;">
                             @else
                                 <div style="width: 60px; height: 60px;" class="bg-secondary d-flex align-items-center justify-content-center">
                                     <i class="fas fa-car text-white"></i>
@@ -47,8 +46,7 @@
                             @endif
                         </td>
                         <td>{{ $car->brand }}</td>
-                        <td>{{ $car->model }}</td>
-                        <td>${{ number_format($car->price, 0) }}</td>
+                        <td>{{ str_pad($car->id, 6, '0', STR_PAD_LEFT) }}</td>
                         <td>
                             <a href="{{ route('admin.cars.edit', $car) }}" class="btn btn-sm btn-warning">
                                 <i class="fas fa-edit"></i>

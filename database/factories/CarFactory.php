@@ -40,7 +40,7 @@ class CarFactory extends Factory
             'model' => $model,
             'year' => $this->faker->numberBetween(2015, 2025),
             'price' => $this->faker->randomFloat(0, 15000, 150000),
-            'image' => null, // Or provide a default placeholder path if available
+            'image' => 'https://placehold.co/600x400?text=' . urlencode($brand . ' ' . $model),
             'images' => null,
             'description' => $this->faker->paragraph(3),
             'condition' => $condition,

@@ -32,18 +32,20 @@
     <div class="row mb-4">
         <div class="col-md-12">
             
-
-
-            <h2 class="mb-4 text-orange d-md-block">Available Cars</h2>
             
-            <!-- Search and Filter -->
-            <div class="d-md-none mb-3">
-                <button class="btn btn-orange w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
-                    <i class="fas fa-filter me-2"></i>Show Filters
-                </button>
-            </div>
-            
-            <div class="collapse d-md-block" id="filterCollapse">
+            @php
+                $filterParams = ['category', 'brand', 'model', 'year', 'mileage', 'price', 'condition', 'fuel'];
+                $isFiltered = false;
+                foreach($filterParams as $param) {
+                    if (request()->filled($param)) {
+                        $isFiltered = true;
+                        break;
+                    }
+                }
+            @endphp
+
+            <div class=" {{ $isFiltered ? 'show' : '' }} d-md-block">
+                <form action="{{ route('home') }}" method="GET" id="filterForm">
                 <div class="card bg-dark text-white p-4 mb-4">
                 <div class="row g-3">
 
@@ -51,10 +53,10 @@
                     <!-- Category -->
                     <div class="col-6 col-md-3">
                         <label class="form-label small">Category</label>
-                        <select id="categoryFilter" class="form-select custom-input">
+                        <select id="categoryFilter" name="category" class="form-select custom-input">
                             <option value="">Any</option>
-                            @foreach($cars->unique('category')->pluck('category') as $category)
-                                <option value="{{ strtolower($category) }}">{{ $category }}</option>
+                            @foreach($allCars->unique('category')->pluck('category') as $category)
+                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -62,10 +64,10 @@
                     <!-- Brand -->
                     <div class="col-6 col-md-3">
                         <label class="form-label small">Brand</label>
-                        <select id="brandFilter" class="form-select custom-input">
+                        <select id="brandFilter" name="brand" class="form-select custom-input">
                             <option value="">Any</option>
-                            @foreach($cars->unique('brand')->pluck('brand') as $brand)
-                                <option value="{{ strtolower($brand) }}">{{ $brand }}</option>
+                            @foreach($allCars->unique('brand')->pluck('brand') as $brand)
+                                <option value="{{ $brand }}" {{ request('brand') == $brand ? 'selected' : '' }}>{{ $brand }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -73,18 +75,23 @@
                     <!-- Model -->
                     <div class="col-6 col-md-3">
                         <label class="form-label small">Model</label>
-                        <select id="modelFilter" class="form-select custom-input text-danger bg-dark" disabled>
-                            <option value="">Select Brand First</option>
+                        <select id="modelFilter" name="model" class="form-select custom-input {{ request('model') ? 'text-white' : 'text-danger bg-dark' }}" {{ request('model') ? '' : 'disabled' }}>
+                            <option value="">{{ request('model') ? 'Any' : 'Select Brand First' }}</option>
+                            @if(request('brand'))
+                                @foreach($allCars->filter(fn($c) => $c->brand === request('brand'))->unique('model')->pluck('model') as $model)
+                                    <option value="{{ $model }}" {{ request('model') == $model ? 'selected' : '' }}>{{ $model }}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                     
                     <!-- First Registration -->
                     <div class="col-6 col-md-3">
                         <label class="form-label small">Year from</label>
-                        <select id="yearFilter" class="form-select custom-input">
+                        <select id="yearFilter" name="year" class="form-select custom-input">
                             <option value="">Any</option>
                             @for($year = date('Y'); $year >= 1990; $year--)
-                                <option value="{{ $year }}">{{ $year }}</option>
+                                <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                             @endfor
                         </select>
                     </div>
@@ -92,48 +99,55 @@
                     <!-- Mileage Up To -->
                     <div class="col-6 col-md-3">
                         <label class="form-label small">Mileage Up To</label>
-                        <select id="mileageFilter" class="form-select custom-input">
+                        <select id="mileageFilter" name="mileage" class="form-select custom-input">
                             <option value="">Any</option>
-                            <option value="50000">50,000 km</option>
-                            <option value="100000">100,000 km</option>
-                            <option value="150000">150,000 km</option>
-                            <option value="200000">200,000 km</option>
+                            <option value="50000" {{ request('mileage') == '50000' ? 'selected' : '' }}>50,000 km</option>
+                            <option value="100000" {{ request('mileage') == '100000' ? 'selected' : '' }}>100,000 km</option>
+                            <option value="150000" {{ request('mileage') == '150000' ? 'selected' : '' }}>150,000 km</option>
+                            <option value="200000" {{ request('mileage') == '200000' ? 'selected' : '' }}>200,000 km</option>
                         </select>
                     </div>
 
                      <!-- Price Up To -->
                     <div class="col-6 col-md-3">
                         <label class="form-label small">Price Up To</label>
-                        <select id="priceFilter" class="form-select custom-input">
+                        <select id="priceFilter" name="price" class="form-select custom-input">
                             <option value="">Any</option>
-                            <option value="5000">$5,000</option>
-                            <option value="10000">$10,000</option>
-                            <option value="20000">$20,000</option>
-                            <option value="30000">$30,000</option>
-                            <option value="50000">$50,000</option>
-                            <option value="75000">$75,000</option>
-                            <option value="100000">$100,000</option>
+                            <option value="5000" {{ request('price') == '5000' ? 'selected' : '' }}>$5,000</option>
+                            <option value="10000" {{ request('price') == '10000' ? 'selected' : '' }}>$10,000</option>
+                            <option value="20000" {{ request('price') == '20000' ? 'selected' : '' }}>$20,000</option>
+                            <option value="30000" {{ request('price') == '30000' ? 'selected' : '' }}>$30,000</option>
+                            <option value="50000" {{ request('price') == '50000' ? 'selected' : '' }}>$50,000</option>
+                            <option value="75000" {{ request('price') == '75000' ? 'selected' : '' }}>$75,000</option>
+                            <option value="100000" {{ request('price') == '100000' ? 'selected' : '' }}>$100,000</option>
                         </select>
                     </div>
                     
-                    <!-- Condition (Custom Toggle) -->
+                    <!-- Condition (Custom Toggle + Sync) -->
                     <div class="col-12 col-md-3">
                         <label class="form-label small">Condition</label>
                         <div class="payment-toggle-container d-md-none">
-                             <input type="radio" class="btn-check" name="conditionToggle" id="conditionAny" value="" checked>
+                             <input type="radio" class="btn-check condition-radio" name="condition" id="conditionAny" value="" {{ request('condition') == '' ? 'checked' : '' }}>
                              <label class="btn btn-outline-custom w-33" for="conditionAny">Any</label>
 
-                             <input type="radio" class="btn-check" name="conditionToggle" id="conditionNew" value="new">
+                             <input type="radio" class="btn-check condition-radio" name="condition" id="conditionNew" value="new" {{ request('condition') == 'new' ? 'checked' : '' }}>
                              <label class="btn btn-outline-custom w-33" for="conditionNew">New</label>
 
-                             <input type="radio" class="btn-check" name="conditionToggle" id="conditionUsed" value="used">
+                             <input type="radio" class="btn-check condition-radio" name="condition" id="conditionUsed" value="used" {{ request('condition') == 'used' ? 'checked' : '' }}>
                              <label class="btn btn-outline-custom w-33" for="conditionUsed">Used</label>
                         </div>
-                        <select id="conditionFilter" class="form-select custom-input d-none d-md-block">
+                        <select id="conditionFilter" name="condition" class="form-select custom-input d-none d-md-block">
                             <option value="">Any</option>
-                            <option value="new">New</option>
-                            <option value="used">Used</option>
+                            <option value="new" {{ request('condition') == 'new' ? 'selected' : '' }}>New</option>
+                            <option value="used" {{ request('condition') == 'used' ? 'selected' : '' }}>Used</option>
                         </select>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div class="col-12 col-md-3 d-flex align-items-end">
+                        <button type="submit" id="searchBtn" class="btn btn-orange w-100" style="padding: 10px;">
+                            <i class="fas fa-search me-2"></i>Search (<span id="searchBtnCount">{{ $cars->total() }}</span>)
+                        </button>
                     </div>
                     
                    
@@ -143,7 +157,7 @@
                         <div class="row align-items-center">
                             <div class="col-6">
                                 <div class="form-check custom-checkbox">
-                                    <input class="form-check-input" type="checkbox" id="electricOnlyMobile">
+                                    <input class="form-check-input" type="checkbox" name="fuel" value="electric" id="electricOnlyMobile" {{ request('fuel') == 'electric' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="electricOnlyMobile">
                                         Electric Only <i class="fas fa-charging-station"></i>
                                     </label>
@@ -151,8 +165,9 @@
                             </div>
                             
                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                <i id="resetFiltersMobile" class="fas fa-undo text-orange" style="cursor: pointer; font-size: 1.1rem;" title="Reset Filters"></i>
-                                <span class="text-orange ms-2" style="cursor: pointer; font-size: 0.9rem;"></span>
+                                <button type="button" id="resetFiltersMobile" class="btn btn-link text-orange text-decoration-none small p-0" title="Reset Filters">
+                                    <i class="fas fa-undo me-1"></i> Reset
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -160,21 +175,21 @@
                     <!-- Electric Only & Reset (Desktop) - Same Row -->
                     <div class="col-12 d-none d-md-flex align-items-center justify-content-between mt-3">
                         <div class="form-check custom-checkbox">
-                            <input class="form-check-input" type="checkbox" id="electricOnly">
+                            <input class="form-check-input" type="checkbox" name="fuel" value="electric" id="electricOnly" {{ request('fuel') == 'electric' ? 'checked' : '' }}>
                             <label class="form-check-label" for="electricOnly">
                                 Electric Only <i class="fas fa-charging-station ms-1"></i>
                             </label>
                         </div>
                         
                         <div class="d-flex align-items-center">
-                            <i id="resetFilters" class="fas fa-undo text-orange" style="cursor: pointer; font-size: 1.1rem;" title="Reset Filters"></i>
-                            <span class="text-orange ms-2" style="cursor: pointer; font-size: 0.9rem;"></span>
+                            <button type="button" id="resetFilters" class="btn btn-link text-orange text-decoration-none small p-0" title="Reset Filters">
+                                <i class="fas fa-undo me-1"></i> Reset Filters
+                            </button>
                         </div>
                     </div>
-                    
-                    
                 </div>
             </div>
+            </form>
             </div>
 
             <style>
@@ -297,71 +312,193 @@
                         color: #dee2e6;
                     }
                 }
+
+                /* Premium UI Enhancements */
+                .section-header {
+                    font-weight: 700;
+                    letter-spacing: -0.5px;
+                    border-left: 5px solid #e54b18;
+                    padding-left: 15px;
+                    margin-bottom: 25px;
+                }
+                
+                .horizontal-scroll-wrapper {
+                    overflow-x: auto;
+                    display: flex;
+                    gap: 20px;
+                    padding: 10px 0 25px 0;
+                    scrollbar-width: thin;
+                    scrollbar-color: #e54b18 #212529;
+                }
+                
+                .horizontal-scroll-wrapper::-webkit-scrollbar {
+                    height: 6px;
+                }
+                
+                .horizontal-scroll-wrapper::-webkit-scrollbar-thumb {
+                    background: #e54b18;
+                    border-radius: 10px;
+                }
+                
+                .horizontal-scroll-wrapper .car-item-horizontal {
+                    flex: 0 0 320px;
+                }
+                
+                .car-card {
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                    overflow: hidden;
+                    backdrop-filter: blur(10px);
+                    background: rgba(33, 37, 41, 0.8) !important;
+                }
+                
+                .car-card:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+                    border-color: rgba(229, 75, 24, 0.5);
+                }
+                
+                .car-card .car-image {
+                    height: 200px;
+                    object-fit: cover;
+                    transition: transform 0.6s ease;
+                }
+                
+                .car-card:hover .car-image {
+                    transform: scale(1.1);
+                }
+                
+                .price-tag {
+                    font-size: 1.5rem;
+                    font-weight: 800;
+                    color: #fff;
+                    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                }
+                
+                .badge-premium {
+                    background: rgba(229, 75, 24, 0.2);
+                    color: #e54b18;
+                    border: 1px solid rgba(229, 75, 24, 0.3);
+                    font-weight: 600;
+                    padding: 5px 10px;
+                }
+                /* Pagination Styling */
+                .pagination {
+                    gap: 5px;
+                }
+                .page-item .page-link {
+                    background-color: #212529 !important;
+                    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                    color: rgba(255, 255, 255, 0.8) !important;
+                    padding: 10px 18px;
+                    border-radius: 8px !important;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .page-item.active .page-link {
+                    background-color: #e54b18 !important;
+                    border-color: #e54b18 !important;
+                    color: #fff !important;
+                    box-shadow: 0 4px 15px rgba(229, 75, 24, 0.3);
+                }
+                .page-item.disabled .page-link {
+                    background-color: rgba(255, 255, 255, 0.05) !important;
+                    color: rgba(255, 255, 255, 0.3) !important;
+                }
+                .page-link:hover:not(.active) {
+                    background-color: rgba(229, 75, 24, 0.1) !important;
+                    border-color: #e54b18 !important;
+                    color: #e54b18 !important;
+                }
+                
+                /* Fix massive SVG icons in default pagination */
+                .pagination svg {
+                    width: 1.25rem !important;
+                    height: 1.25rem !important;
+                    display: inline-block;
+                }
+                
+                @media (max-width: 768px) {
+                    .car-item {
+                        padding: 5px;
+                    }
+                    .car-card .car-image {
+                        height: 130px;
+                    }
+                    .card-body {
+                        padding: 10px;
+                    }
+                    .card-title {
+                        font-size: 0.9rem;
+                        margin-bottom: 5px;
+                    }
+                    .price-tag {
+                        font-size: 1.1rem;
+                    }
+                    .badge-premium {
+                        padding: 3px 6px;
+                        font-size: 0.7rem;
+                    }
+                    .btn-primary {
+                        padding: 5px;
+                        font-size: 0.8rem;
+                    }
+                    .horizontal-scroll-wrapper .car-item-horizontal {
+                        flex: 0 0 200px;
+                    }
+                }
             </style>
         </div>
     </div>
-
-    <div class="row" id="carsContainer">
-        @forelse($cars as $car)
-        <div class="col-md-4 car-item" 
-             data-brand="{{ strtolower($car->brand) }}" 
-             data-model="{{ strtolower($car->model) }}"
-             data-condition="{{ $car->condition }}"
-             data-fuel="{{ $car->fuel_type }}"
-             data-year="{{ $car->year }}"
-             data-mileage="{{ $car->mileage ?? 0 }}"
-             data-price="{{ $car->price }}">
-            <div class="card car-card bg-dark">
-                @guest
-                <button class="toggle-favorite" data-car-id="{{ $car->id }}">
-                    <i class="fas fa-heart"></i>
-                </button>   
-                @endguest                
-                @if($car->image)
-                    <img src="{{ asset('storage/' . $car->image) }}" class="card-img-top car-image" alt="{{ $car->brand }} {{ $car->model }}">
-                @else
-                    <div class="car-image bg-secondary d-flex align-items-center justify-content-center">
-                        <i class="fas fa-car fa-5x text-white"></i>
-                    </div>
-                @endif
-                <div class="card-body">
-                    <h5 class="card-title text-light">{{ $car->brand }} {{ $car->model }}</h5>
-                    <p class="price-tag mb-2">${{ number_format($car->price, 0) }}</p>
-                    
-                    <div class="mb-3">
-                        <span class="badge bg-primary badge-custom">{{ ucfirst($car->condition) }}</span>
-                        <span class="badge bg-info badge-custom">{{ $car->year }}</span>
-                        <span class="badge bg-warning text-dark badge-custom">{{ ucfirst($car->transmission) }}</span>
-                    </div>
-                    
-                    <p class="card-text text-muted small">
-                        <span class="text-white">
-                            <i class="fas fa-gas-pump text-white"></i> {{ ucfirst($car->fuel_type) }}
-                        </span>
-                        @if(isset($car->mileage))
-                            | <i class="fas fa-tachometer-alt"></i> {{ number_format($car->mileage) }} km
-                        @endif
-                    </p>
-                    
-                    <p class="card-text">{{ Str::limit($car->description, 100) }}</p>
-                    
-                    <a href="{{ route('cars.show', $car->id) }}" class="btn btn-primary w-100">
-                        View Details
-                    </a>
+            @if(!$isFiltered)
+            <div id="recentlyViewedSection" style="display: none;" class="mb-5">
+                <h3 class="section-header text-white">Recently Viewed</h3>
+                <div id="recentlyViewedContainer" class="horizontal-scroll-wrapper">
+                    <!-- Recently viewed cars will be injected here -->
                 </div>
             </div>
-        </div>
-        @empty
-        <div class="col-12">
-            <div class="alert alert-info text-center">
-                <i class="fas fa-info-circle"></i> No cars available at the moment.
+
+            <div id="topDealsSection" class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h3 class="section-header text-white">Top Deals</h3>
+                    <span class="text-orange small">Hot picks for you</span>
+                </div>
+                <div class="horizontal-scroll-wrapper">
+                    @php
+                        $topDeals = $allCars->sortBy('price')->take(6);
+                    @endphp
+                    @foreach($topDeals as $deal)
+                    <div class="car-item-horizontal">
+                        <div class="card car-card h-100">
+                            <div class="position-absolute top-0 end-0 m-2 z-index-1">
+                                <span class="badge bg-danger">HOT DEAL</span>
+                            </div>
+                            <img src="{{ Str::startsWith($deal->image, 'http') ? $deal->image : asset('storage/' . $deal->image) }}" class="card-img-top car-image" alt="{{ $deal->brand }}">
+                            <div class="card-body">
+                                <h6 class="text-white mb-1">{{ $deal->brand }} {{ $deal->model }}</h6>
+                                <p class="price-tag mb-0">${{ number_format($deal->price) }}</p>
+                                <a href="{{ route('cars.show', $deal->id) }}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
-        @endforelse
+            @endif
+
+            <h2 class="section-header text-orange">{{ $isFiltered ? 'Search Results' : 'Available Cars' }}</h2>
+
+    <div class="row g-2" id="carsContainer">
+        @include('partials.cars-grid', ['cars' => $cars])
     </div>
     
-    <div id="noResults" class="alert alert-warning text-center" style="display: none;">
+    <div id="noResults" class="alert alert-warning text-center" style="{{ $cars->isEmpty() ? '' : 'display: none;' }}">
         <i class="fas fa-search"></i> No cars found matching your criteria.
+    </div>
+    <div class="d-flex justify-content-center mt-5 mb-4" id="paginationContainer">
+        {{ $cars->appends(request()->query())->links('pagination::bootstrap-5') }}
     </div>
 </div>
 
@@ -387,75 +524,126 @@ window.addEventListener('scroll', function() {
 $(document).ready(function() {
     const cars = @json($cars);
     
-    // Filter functionality
-    function filterCars() {
-        const brand = $('#brandFilter').val();
-        const model = $('#modelFilter').val();
-        const year = $('#yearFilter').val();
-        const mileage = $('#mileageFilter').val();
-        const condition = $('#conditionFilter').val() || $('input[name="conditionToggle"]:checked').val();
-
-
-        const price = $('#priceFilter').val();
-        const electricOnly = $('#electricOnly').is(':checked');
+    // Filter count logic (AJAX)
+    function updateSearchCount() {
+        const formData = $('#filterForm').serialize();
+        const searchBtnCount = $('#searchBtnCount');
         
-        let visibleCount = 0;
+        $.get('{{ route('cars.count') }}?' + formData, function(data) {
+            searchBtnCount.text(data.count);
+        });
+    }
+
+    // Check if any filters are active
+    function hasActiveFilters() {
+        const formData = new FormData($('#filterForm')[0]);
+        for (let [key, value] of formData.entries()) {
+            if (value !== '') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // AJAX Search Handler
+    $('#filterForm').on('submit', function(e) {
+        e.preventDefault();
         
-        $('.car-item').each(function() {
-            const carBrand = $(this).data('brand');
-            const carModel = $(this).data('model');
-            const carYear = $(this).data('year');
-            const carMileage = $(this).data('mileage');
-            const carCondition = $(this).data('condition');
-            const carPrice = $(this).data('price');
-            const carFuel = $(this).data('fuel');
-            
-            const matchesBrand = !brand || carBrand === brand;
-            const matchesModel = !model || carModel === model;
-            const matchesYear = !year || carYear == parseInt(year);
-            const matchesMileage = !mileage || carMileage <= parseInt(mileage);
-            const matchesCondition = !condition || carCondition === condition;
-            const matchesPrice = !price || carPrice <= parseInt(price);
-            const matchesElectric = !electricOnly || carFuel === 'electric';
-            
-            if (matchesBrand && matchesModel && matchesYear && matchesMileage && matchesCondition && matchesPrice && matchesElectric) {
-                $(this).fadeIn();
-                visibleCount++;
-            } else {
-                $(this).fadeOut();
+        const formData = $(this).serialize();
+        const carsContainer = $('#carsContainer');
+        const paginationContainer = $('#paginationContainer');
+        const searchBtnCount = $('#searchBtnCount');
+        
+        $.ajax({
+            url: '{{ route('cars.search') }}',
+            method: 'GET',
+            data: formData,
+            success: function(response) {
+                // Update cars grid
+                carsContainer.html(response.html);
+                
+                // Update pagination
+                paginationContainer.html(response.pagination);
+                
+                // Update search button count
+                searchBtnCount.text(response.total);
+                
+                // Hide recently viewed and top deals when filters are active
+                if (hasActiveFilters()) {
+                    $('#recentlyViewedSection, #topDealsSection').fadeOut();
+                }
+                
+                // Scroll to results
+                $('html, body').animate({
+                    scrollTop: carsContainer.offset().top - 100
+                }, 600);
+            },
+            error: function() {
+                alert('An error occurred while searching. Please try again.');
             }
         });
-        
-        $('#resultsCount').text(`${visibleCount} Result${visibleCount !== 1 ? 's' : ''}`);
-        $('#mobileResultsCount').text(`${visibleCount} Results`);
+    });
 
-        $('#noResults').toggle(visibleCount === 0);
-    }
-    
-    // Bind filter events
-    $('#categoryFilter, #brandFilter, #modelFilter, #yearFilter, #mileageFilter, #priceFilter').on('change', filterCars);
+    // Bind filter events for real-time count + instant hiding
+    $('#categoryFilter, #brandFilter, #modelFilter, #yearFilter, #mileageFilter, #priceFilter, #conditionFilter, .condition-radio, #electricOnly, #electricOnlyMobile').on('change', function() {
+        updateSearchCount();
+        
+        // Hide recently viewed and top deals when filters are active
+        if (hasActiveFilters()) {
+            $('#recentlyViewedSection, #topDealsSection').fadeOut();
+        } else {
+            $('#recentlyViewedSection, #topDealsSection').fadeIn();
+        }
+    });
+
+    // Electric Only Sync Logic
     $('#electricOnly, #electricOnlyMobile').on('change', function() {
         $('#electricOnly, #electricOnlyMobile').prop('checked', $(this).is(':checked'));
-        filterCars();
     });
-    $('input[name="conditionToggle"]').on('change', filterCars);
-    
-    // Reset filters
-    $('#resetFilters, #resetFiltersMobile').on('click', function() {
-        $('#brandFilter').val('');
-        $('#modelFilter').val('');
-        $('#yearFilter').val('');
-        $('#mileageFilter').val('');
-        $('#conditionFilter').val('');
-        $('input[name="conditionToggle"][value=""]').prop('checked', true);
-        $('#priceFilter').val('');
-        $('#locationFilter').val('');
+
+    // Condition Sync Logic - now both radio and select have name="condition"
+    const conditionRadios = $('.condition-radio');
+    const conditionSelect = $('#conditionFilter');
+
+    conditionRadios.on('change', function() {
+        const val = $(this).val();
+        conditionSelect.val(val);
+    });
+
+    conditionSelect.on('change', function() {
+        const val = $(this).val();
+        conditionRadios.filter(`[value="${val}"]`).prop('checked', true);
+    });
+
+    // Reset filters - now triggers AJAX search
+    $('#resetFilters, #resetFiltersMobile').on('click', function(e) {
+        e.preventDefault();
+        
+        // Reset all select dropdowns
+        $('#categoryFilter, #brandFilter, #yearFilter, #mileageFilter, #priceFilter, #conditionFilter').val('');
+        
+        // Reset and disable model dropdown
+        $('#modelFilter').val('').prop('disabled', true).addClass("text-danger").removeClass("text-white")
+            .html('<option value="">Select Brand First</option>');
+        
+        // Reset condition radios
+        $('#conditionAny').prop('checked', true);
+        
+        // Reset electric checkboxes
         $('#electricOnly, #electricOnlyMobile').prop('checked', false);
-        filterCars();
+        
+        // Show Recently Viewed and Top Deals sections
+        $('#recentlyViewedSection, #topDealsSection').fadeIn();
+        
+        // Update the search count first
+        updateSearchCount();
+        
+        // Trigger form submission to reload all cars
+        $('#filterForm').submit();
     });
     
 
-    // Dependent Dropdowns Logic
+    // Dependent Dropdowns Logic - FIXED brand/model comparison
     $('#brandFilter').on('change', function() {
         const selectedBrand = $(this).val();
         const modelSelect = $('#modelFilter');
@@ -466,26 +654,92 @@ $(document).ready(function() {
         
         if (selectedBrand) {
             // Enable select and update placeholder
-            modelSelect.prop('disabled', false).addClass("text-white").removeClass("text-danger").html('<option value="";>Any</option>');
+            modelSelect.prop('disabled', false).addClass("text-white").removeClass("text-danger").html('<option value="">Any</option>');
             
-            // Get unique models for selected brand
+            // Get unique models for selected brand from the allCars collection
             const models = new Set();
-            cars.forEach(car => {
-                if (car.brand.toLowerCase() === selectedBrand) {
+            @json($allCars).forEach(car => {
+                // Fixed: Direct comparison without toLowerCase since we removed it from the select options
+                if (car.brand === selectedBrand) {
                     models.add(car.model);
                 }
             });
             
             // Sort and append options
             Array.from(models).sort().forEach(model => {
-                modelSelect.append(`<option value="${model.toLowerCase()}">${model}</option>`);
+                modelSelect.append(`<option value="${model}">${model}</option>`);
             });
         }
-        
-        // Trigger filter
-        filterCars();
     });
 
+    // Handle pagination link clicks
+    $(document).on('click', '.pagination a', function(e) {
+        e.preventDefault();
+        const url = $(this).attr('href');
+        
+        // Extract page number from URL
+        const pageParam = new URL(url).searchParams.get('page');
+        
+        // Add page to form data
+        const formData = $('#filterForm').serialize() + '&page=' + pageParam;
+        const carsContainer = $('#carsContainer');
+        const paginationContainer = $('#paginationContainer');
+        
+        $.ajax({
+            url: '{{ route('cars.search') }}',
+            method: 'GET',
+            data: formData,
+            success: function(response) {
+                // Update cars grid
+                carsContainer.html(response.html);
+                
+                // Update pagination
+                paginationContainer.html(response.pagination);
+                
+                // Scroll to results
+                $('html, body').animate({
+                    scrollTop: carsContainer.offset().top - 100
+                }, 600);
+            },
+            error: function() {
+                alert('An error occurred while loading the page. Please try again.');
+            }
+        });
+    });
+
+    // Recently Viewed Logic
+    const recentlyViewedIds = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    if (recentlyViewedIds.length > 0 && !@json($isFiltered)) {
+        const viewedContainer = $('#recentlyViewedContainer');
+        const viewedSection = $('#recentlyViewedSection');
+        
+        recentlyViewedIds.forEach(id => {
+            const car = @json($allCars).find(c => c.id == id);
+            if (car) {
+                const imagePath = (car.image && car.image.startsWith('http')) 
+                    ? car.image 
+                    : `/storage/${car.image}`;
+                
+                const carHtml = `
+                    <div class="car-item-horizontal">
+                        <div class="card car-card h-100">
+                            <img src="${imagePath}" class="card-img-top car-image" alt="${car.brand}">
+                            <div class="card-body">
+                                <h6 class="text-white mb-1">${car.brand} ${car.model}</h6>
+                                <p class="price-tag mb-0">$${Number(car.price).toLocaleString()}</p>
+                                <a href="/cars/${car.id}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                viewedContainer.append(carHtml);
+            }
+        });
+        
+        if (viewedContainer.children().length > 0) {
+            viewedSection.fadeIn();
+        }
+    }
 });
 </script>
 @endsection

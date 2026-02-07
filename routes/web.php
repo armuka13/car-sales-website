@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/api/cars/search', [HomeController::class, 'searchAjax'])->name('cars.search');
+Route::get('/api/cars/count', [HomeController::class, 'getCount'])->name('cars.count');
 Route::get('/favorites', [HomeController::class, 'favorites'])->name('favorites');
 Route::post('/api/cars/favorites', [HomeController::class, 'getFavorites'])->name('api.favorites');
 Route::get('/cars/{car}', [HomeController::class, 'show'])->name('cars.show');

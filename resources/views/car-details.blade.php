@@ -47,7 +47,7 @@
                             <div class="carousel-inner rounded-start">
                                 @foreach($allImages as $index => $image)
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <img src="{{ asset('storage/' . $image) }}" 
+                                        <img src="{{ Str::startsWith($image, 'http') ? $image : asset('storage/' . $image) }}"
                                              class="d-block w-100 car-detail-image" 
                                              alt="{{ $car->brand }} {{ $car->model }} - Image {{ $index + 1 }}"
                                              style="max-height: 600px; object-fit: cover;">
@@ -175,6 +175,11 @@
                                 <i class="fas fa-handshake me-2"></i>Interested in this car?
                             </h5>
                             <p class="mb-2">
+                                <p class="text-white text-decoration-none">
+                                    <strong>Car ID: </strong>{{ str_pad($car->id, 6, '0', STR_PAD_LEFT) }}
+                                </p>
+                            </p>
+                            <p class="mb-2">
                                 <i class="fas fa-envelope me-2"></i>
                                 <a href="mailto:{{ $settings->email }}" class="text-white text-decoration-none">
                                     {{ $settings->email }}
@@ -262,4 +267,23 @@
         }
     }
 </style>
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carId = {{ $car->id }};
+        let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        
+        // Remove if already exists to move to front
+        recentlyViewed = recentlyViewed.filter(id => id !== carId);
+        
+        // Add to front
+        recentlyViewed.unshift(carId);
+        
+        // Keep only top 10
+        recentlyViewed = recentlyViewed.slice(0, 10);
+        
+        localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+    });
+</script>
+@endsection
 @endsection
