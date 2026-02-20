@@ -6,13 +6,13 @@
     <div class="container">
         <div class="row text-center">
             <div class="col-md-6">
-                <i class="fas fa-envelope"></i> Email: 
+                <i class="fas fa-envelope"></i> {{ __('Email') }}: 
                 <a href="mailto:{{ $settings->email }}" class="text-white text-decoration-none">
                     <strong>{{ $settings->email }}</strong>
                 </a>
             </div>
             <div class="col-md-6">
-                <i class="fas fa-phone"></i> Phone: 
+                <i class="fas fa-phone"></i> {{ __('Phone') }}: 
                 <a href="tel:{{ $settings->phone }}" class="text-white text-decoration-none">
                     <strong>{{ $settings->phone }}</strong>
                 </a>
@@ -24,7 +24,7 @@
 <div class="hero" style="background-image: url('{{ asset('storage/' . $settings->image) }}');">
     <div class="hero-overlay"></div>
     <div class="container hero-content">
-        <h1 class="display-4 mb-3">{{ $settings->description }}</h1>
+        <h1 class="display-4 mb-3" style="font-weight:1000">{{ $settings->description }}</h1>
     </div>
 </div>
 
@@ -52,9 +52,9 @@
 
                     <!-- Category -->
                     <div class="col-6 col-md-3">
-                        <label class="form-label small">Category</label>
+                        <label class="form-label small">{{ __('Category') }}</label>
                         <select id="categoryFilter" name="category" class="form-select custom-input">
-                            <option value="">Any</option>
+                            <option value="">{{ __('Any') }}</option>
                             @foreach($allCars->unique('category')->pluck('category') as $category)
                                 <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
                             @endforeach
@@ -63,9 +63,9 @@
 
                     <!-- Brand -->
                     <div class="col-6 col-md-3">
-                        <label class="form-label small">Brand</label>
+                        <label class="form-label small">{{ __('Brand') }}</label>
                         <select id="brandFilter" name="brand" class="form-select custom-input">
-                            <option value="">Any</option>
+                            <option value="">{{ __('Any') }}</option>
                             @foreach($allCars->unique('brand')->pluck('brand') as $brand)
                                 <option value="{{ $brand }}" {{ request('brand') == $brand ? 'selected' : '' }}>{{ $brand }}</option>
                             @endforeach
@@ -74,9 +74,9 @@
                     
                     <!-- Model -->
                     <div class="col-6 col-md-3">
-                        <label class="form-label small">Model</label>
+                        <label class="form-label small">{{ __('Model') }}</label>
                         <select id="modelFilter" name="model" class="form-select custom-input {{ request('model') ? 'text-white' : 'text-danger bg-dark' }}" {{ request('model') ? '' : 'disabled' }}>
-                            <option value="">{{ request('model') ? 'Any' : 'Select Brand First' }}</option>
+                            <option value="">{{ request('model') ? __('Any') : __('Select Brand First') }}</option>
                             @if(request('brand'))
                                 @foreach($allCars->filter(fn($c) => $c->brand === request('brand'))->unique('model')->pluck('model') as $model)
                                     <option value="{{ $model }}" {{ request('model') == $model ? 'selected' : '' }}>{{ $model }}</option>
@@ -87,9 +87,9 @@
                     
                     <!-- First Registration -->
                     <div class="col-6 col-md-3">
-                        <label class="form-label small">Year from</label>
+                        <label class="form-label small">{{ __('Year from') }}</label>
                         <select id="yearFilter" name="year" class="form-select custom-input">
-                            <option value="">Any</option>
+                            <option value="">{{ __('Any') }}</option>
                             @for($year = date('Y'); $year >= 1990; $year--)
                                 <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                             @endfor
@@ -98,9 +98,9 @@
                     
                     <!-- Mileage Up To -->
                     <div class="col-6 col-md-3">
-                        <label class="form-label small">Mileage Up To</label>
+                        <label class="form-label small">{{ __('Mileage Up To') }}</label>
                         <select id="mileageFilter" name="mileage" class="form-select custom-input">
-                            <option value="">Any</option>
+                            <option value="">{{ __('Any') }}</option>
                             <option value="50000" {{ request('mileage') == '50000' ? 'selected' : '' }}>50,000 km</option>
                             <option value="100000" {{ request('mileage') == '100000' ? 'selected' : '' }}>100,000 km</option>
                             <option value="150000" {{ request('mileage') == '150000' ? 'selected' : '' }}>150,000 km</option>
@@ -110,43 +110,43 @@
 
                      <!-- Price Up To -->
                     <div class="col-6 col-md-3">
-                        <label class="form-label small">Price Up To</label>
+                        <label class="form-label small">{{ __('Price Up To') }}</label>
                         <select id="priceFilter" name="price" class="form-select custom-input">
-                            <option value="">Any</option>
-                            <option value="5000" {{ request('price') == '5000' ? 'selected' : '' }}>$5,000</option>
-                            <option value="10000" {{ request('price') == '10000' ? 'selected' : '' }}>$10,000</option>
-                            <option value="20000" {{ request('price') == '20000' ? 'selected' : '' }}>$20,000</option>
-                            <option value="30000" {{ request('price') == '30000' ? 'selected' : '' }}>$30,000</option>
-                            <option value="50000" {{ request('price') == '50000' ? 'selected' : '' }}>$50,000</option>
-                            <option value="75000" {{ request('price') == '75000' ? 'selected' : '' }}>$75,000</option>
-                            <option value="100000" {{ request('price') == '100000' ? 'selected' : '' }}>$100,000</option>
+                            <option value="">{{ __('Any') }}</option>
+                            <option value="5000" {{ request('price') == '5000' ? 'selected' : '' }}>{{ __('5,000 €') }}</option>
+                            <option value="10000" {{ request('price') == '10000' ? 'selected' : '' }}>{{ __('10,000 €') }}</option>
+                            <option value="20000" {{ request('price') == '20000' ? 'selected' : '' }}>{{ __('20,000 €') }}</option>
+                            <option value="30000" {{ request('price') == '30000' ? 'selected' : '' }}>{{ __('30,000 €') }}</option>
+                            <option value="50000" {{ request('price') == '50000' ? 'selected' : '' }}>{{ __('50,000 €') }}</option>
+                            <option value="75000" {{ request('price') == '75000' ? 'selected' : '' }}>{{ __('75,000 €') }}</option>
+                            <option value="100000" {{ request('price') == '100000' ? 'selected' : '' }}>{{ __('100,000 €') }}</option>
                         </select>
                     </div>
                     
                     <!-- Condition (Custom Toggle + Sync) -->
                     <div class="col-12 col-md-3">
-                        <label class="form-label small">Condition</label>
+                        <label class="form-label small">{{ __('Condition') }}</label>
                         <div class="payment-toggle-container d-md-none">
                              <input type="radio" class="btn-check condition-radio" name="condition" id="conditionAny" value="" {{ request('condition') == '' ? 'checked' : '' }}>
-                             <label class="btn btn-outline-custom w-33" for="conditionAny">Any</label>
+                             <label class="btn btn-outline-custom w-33" for="conditionAny">{{ __('Any') }}</label>
 
                              <input type="radio" class="btn-check condition-radio" name="condition" id="conditionNew" value="new" {{ request('condition') == 'new' ? 'checked' : '' }}>
-                             <label class="btn btn-outline-custom w-33" for="conditionNew">New</label>
+                             <label class="btn btn-outline-custom w-33" for="conditionNew">{{ __('New') }}</label>
 
                              <input type="radio" class="btn-check condition-radio" name="condition" id="conditionUsed" value="used" {{ request('condition') == 'used' ? 'checked' : '' }}>
-                             <label class="btn btn-outline-custom w-33" for="conditionUsed">Used</label>
+                             <label class="btn btn-outline-custom w-33" for="conditionUsed">{{ __('Used') }}</label>
                         </div>
                         <select id="conditionFilter" name="condition" class="form-select custom-input d-none d-md-block">
-                            <option value="">Any</option>
-                            <option value="new" {{ request('condition') == 'new' ? 'selected' : '' }}>New</option>
-                            <option value="used" {{ request('condition') == 'used' ? 'selected' : '' }}>Used</option>
+                            <option value="">{{ __('Any') }}</option>
+                            <option value="new" {{ request('condition') == 'new' ? 'selected' : '' }}>{{ __('New') }}</option>
+                            <option value="used" {{ request('condition') == 'used' ? 'selected' : '' }}>{{ __('Used') }}</option>
                         </select>
                     </div>
 
                     <!-- Search Button -->
                     <div class="col-12 col-md-3 d-flex align-items-end">
                         <button type="submit" id="searchBtn" class="btn btn-orange w-100" style="padding: 10px;">
-                            <i class="fas fa-search me-2"></i>Search (<span id="searchBtnCount">{{ $cars->total() }}</span>)
+                            <i class="fas fa-search me-2"></i>{{ __('Search') }} (<span id="searchBtnCount">{{ $cars->total() }}</span>)
                         </button>
                     </div>
                     
@@ -159,14 +159,14 @@
                                 <div class="form-check custom-checkbox">
                                     <input class="form-check-input" type="checkbox" name="fuel" value="electric" id="electricOnlyMobile" {{ request('fuel') == 'electric' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="electricOnlyMobile">
-                                        Electric Only <i class="fas fa-charging-station"></i>
+                                        {{ __('Electric Only') }} <i class="fas fa-charging-station"></i>
                                     </label>
                                 </div>
                             </div>
                             
                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                <button type="button" id="resetFiltersMobile" class="btn btn-link text-orange text-decoration-none small p-0" title="Reset Filters">
-                                    <i class="fas fa-undo me-1"></i> Reset
+                                <button type="button" id="resetFiltersMobile" class="btn btn-link text-orange text-decoration-none small p-0" title="{{ __('Reset Filters') }}">
+                                    <i class="fas fa-undo me-1"></i> {{ __('Reset') }}
                                 </button>
                             </div>
                         </div>
@@ -177,13 +177,13 @@
                         <div class="form-check custom-checkbox">
                             <input class="form-check-input" type="checkbox" name="fuel" value="electric" id="electricOnly" {{ request('fuel') == 'electric' ? 'checked' : '' }}>
                             <label class="form-check-label" for="electricOnly">
-                                Electric Only <i class="fas fa-charging-station ms-1"></i>
+                                {{ __('Electric Only') }} <i class="fas fa-charging-station ms-1"></i>
                             </label>
                         </div>
                         
                         <div class="d-flex align-items-center">
-                            <button type="button" id="resetFilters" class="btn btn-link text-orange text-decoration-none small p-0" title="Reset Filters">
-                                <i class="fas fa-undo me-1"></i> Reset Filters
+                            <button type="button" id="resetFilters" class="btn btn-link text-orange text-decoration-none small p-0" title="{{ __('Reset Filters') }}">
+                                <i class="fas fa-undo me-1"></i> {{ __('Reset Filters') }}
                             </button>
                         </div>
                     </div>
@@ -454,7 +454,7 @@
     </div>
             @if(!$isFiltered)
             <div id="recentlyViewedSection" style="display: none;" class="mb-5">
-                <h3 class="section-header text-white">Recently Viewed</h3>
+                <h3 class="section-header text-white">{{ __('Recently Viewed') }}</h3>
                 <div id="recentlyViewedContainer" class="horizontal-scroll-wrapper">
                     <!-- Recently viewed cars will be injected here -->
                 </div>
@@ -462,8 +462,8 @@
 
             <div id="topDealsSection" class="mb-5">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                    <h3 class="section-header text-white">Top Deals</h3>
-                    <span class="text-orange small">Hot picks for you</span>
+                    <h3 class="section-header text-white">{{ __('Top Deals') }}</h3>
+                    <span class="text-orange small">{{ __('Hot picks for you') }}</span>
                 </div>
                 <div class="horizontal-scroll-wrapper">
                     @php
@@ -473,12 +473,12 @@
                     <div class="car-item-horizontal">
                         <div class="card car-card h-100">
                             <div class="position-absolute top-0 end-0 m-2 z-index-1">
-                                <span class="badge bg-danger">HOT DEAL</span>
+                                <span class="badge bg-danger">{{ __('HOT DEAL') }}</span>
                             </div>
                             <img src="{{ Str::startsWith($deal->image, 'http') ? $deal->image : asset('storage/' . $deal->image) }}" class="card-img-top car-image" alt="{{ $deal->brand }}">
                             <div class="card-body">
                                 <h6 class="text-white mb-1">{{ $deal->brand }} {{ $deal->model }}</h6>
-                                <p class="price-tag mb-0">${{ number_format($deal->price) }}</p>
+                                <p class="price-tag mb-0">{{ number_format($deal->price) }} €</p>
                                 <a href="{{ route('cars.show', $deal->id) }}" class="stretched-link"></a>
                             </div>
                         </div>
@@ -488,14 +488,14 @@
             </div>
             @endif
 
-            <h2 class="section-header text-orange">{{ $isFiltered ? 'Search Results' : 'Available Cars' }}</h2>
+            <h2 class="section-header text-orange">{{ $isFiltered ? __('Search Results') : __('Available Cars') }}</h2>
 
     <div class="row g-2" id="carsContainer">
         @include('partials.cars-grid', ['cars' => $cars])
     </div>
     
     <div id="noResults" class="alert alert-warning text-center" style="{{ $cars->isEmpty() ? '' : 'display: none;' }}">
-        <i class="fas fa-search"></i> No cars found matching your criteria.
+        <i class="fas fa-search"></i> {{ __('No cars found matching your criteria.') }}
     </div>
     <div class="d-flex justify-content-center mt-5 mb-4" id="paginationContainer">
         {{ $cars->appends(request()->query())->links('pagination::bootstrap-5') }}
@@ -579,7 +579,7 @@ $(document).ready(function() {
                 }, 600);
             },
             error: function() {
-                alert('An error occurred while searching. Please try again.');
+                alert('{{ __('An error occurred while searching. Please try again.') }}');
             }
         });
     });
@@ -702,7 +702,7 @@ $(document).ready(function() {
                 }, 600);
             },
             error: function() {
-                alert('An error occurred while loading the page. Please try again.');
+                alert('{{ __('An error occurred while loading the page. Please try again.') }}');
             }
         });
     });
@@ -726,7 +726,7 @@ $(document).ready(function() {
                             <img src="${imagePath}" class="card-img-top car-image" alt="${car.brand}">
                             <div class="card-body">
                                 <h6 class="text-white mb-1">${car.brand} ${car.model}</h6>
-                                <p class="price-tag mb-0">$${Number(car.price).toLocaleString()}</p>
+                                <p class="price-tag mb-0">${Number(car.price).toLocaleString()} €</p>
                                 <a href="/cars/${car.id}" class="stretched-link"></a>
                             </div>
                         </div>

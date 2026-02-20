@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -167,36 +167,43 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Home</a>
+                        <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
                     </li>
                     @guest
                         <li class="nav-item favorites-badge">
-                        <a class="nav-link" href="{{ route('favorites') }}">
-                            <i class="fas fa-heart"></i> Favorites
-                        </a>
-                    </li>
+                            <a class="nav-link" href="{{ route('favorites') }}">
+                                <i class="fas fa-heart"></i> {{ __('Favorites') }}
+                            </a>
+                        </li>
                     @endguest
                     
                     @auth
                         @if(auth()->user()->is_admin)
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                <a class="nav-link" href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.settings') }}">Settings</a>
+                                <a class="nav-link" href="{{ route('admin.settings') }}">{{ __('Settings') }}</a>
                             </li>
                         @endif
                         <li class="nav-item">
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
-                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                                <button type="submit" class="btn btn-link nav-link">{{ __('Logout') }}</button>
                             </form>
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Admin Login</a>
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Admin Login') }}</a>
                         </li>
                     @endauth
+
+                    <li class="nav-item ms-3" style="margin-left:-10px; margin-top: 6px;">
+                        <div class="btn-group" role="group" aria-label="Language switcher">
+                            <a href="{{ route('locale.switch', ['locale' => 'en']) }}" class="btn btn-sm btn-outline-light {{ app()->getLocale() === 'en' ? 'active' : '' }}"><img src="{{ asset('images/gb.png') }}" height=20; width=20;></a>
+                            <a href="{{ route('locale.switch', ['locale' => 'de']) }}" class="btn btn-sm btn-outline-light {{ app()->getLocale() === 'de' ? 'active' : '' }}"><img src="{{ asset('images/de.png') }}" height=20; width=20; ></a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>

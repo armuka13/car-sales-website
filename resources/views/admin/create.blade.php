@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Add New Car')
+@section('title', __('Add New Car'))
 
 @section('content')
 <div class="container my-5 text-white">
-    <h2 class="mb-4">Add New Car</h2>
+    <h2 class="mb-4">{{ __('Add New Car') }}</h2>
     
     <div class="card bg-dark text-white">
         <div class="card-body">
@@ -13,8 +13,8 @@
                 @include('admin.form')
                 
                 <div class="text-end">
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-success">Add Car</button>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
+                    <button type="submit" class="btn btn-success">{{ __('Add Car') }}</button>
                 </div>
             </form>
         </div>

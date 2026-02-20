@@ -23,7 +23,7 @@
         @endif
         <div class="card-body">
             <h5 class="card-title text-light">{{ $car->brand }} {{ $car->model }}</h5>
-            <p class="price-tag mb-2">${{ number_format($car->price, 0) }}</p>
+            <p class="price-tag mb-2">{{ number_format($car->price, 0) }} €</p>
             
             <div class="mb-2">
                 <span class="badge badge-premium">{{ ucfirst($car->condition) }}</span>
@@ -41,7 +41,7 @@
             </p>
             
             <a href="{{ route('cars.show', $car->id) }}" class="btn btn-primary w-100">
-                View Details
+                {{ __('View Details') }}
             </a>
         </div>
     </div>
@@ -49,7 +49,7 @@
 @empty
 <div class="col-12">
     <div class="alert alert-info text-center">
-        <i class="fas fa-info-circle"></i> No cars available at the moment.
+        <i class="fas fa-info-circle"></i> {{ __('No cars available at the moment.') }}
     </div>
 </div>
 @endforelse

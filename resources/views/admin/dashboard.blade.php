@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard')
+@section('title', __('Admin Dashboard'))
 
 @section('content')
 <div class="container my-5 text-white">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h2>Admin Dashboard</h2>
+            <h2>{{ __('Admin Dashboard') }}</h2>
         </div>
         <div class="col-md-4 text-end">
             <a href="{{ route('admin.cars.create') }}" class="btn btn-success">
-                <i class="fas fa-plus"></i> Add New Car
+                <i class="fas fa-plus"></i> {{ __('Add New Car') }}
             </a>
         </div>
     </div>
@@ -27,10 +27,10 @@
             <table class="table table-dark table-hover text-white">
                 <thead>
                     <tr>
-                        <th>Image</th>
-                        <th>Brand</th>
-                        <th>ID</th>
-                        <th>Actions</th>
+                        <th>{{ __('Image') }}</th>
+                        <th>{{ __('Brand') }}</th>
+                        <th>{{ __('ID') }}</th>
+                        <th>{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,7 +62,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center">No cars found.</td>
+                        <td colspan="7" class="text-center">{{ __('No cars found.') }}</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -77,15 +77,15 @@
     <div class="modal-dialog">
         <div class="modal-content bg-dark text-white">
             <div class="modal-header border-secondary">
-                <h5 class="modal-title">Confirm Deletion</h5>
+                <h5 class="modal-title">{{ __('Confirm Deletion') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this car? This action cannot be undone.
+                {{ __('Are you sure you want to delete this car? This action cannot be undone.') }}
             </div>
             <div class="modal-footer border-secondary">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Delete Car</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">{{ __('Delete Car') }}</button>
             </div>
         </div>
     </div>

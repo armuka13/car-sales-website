@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', 'My Favorites - ' . $settings->name)
+@section('title', __('My Favorites') . ' - ' . $settings->name)
 
 @section('content')
 <div class="container my-5">
     <div class="row mb-4">
         <div class="col-md-12">
             <h2 class="mb-4 text-white">
-                <i class="fas fa-heart text-danger"></i> My Favorites
+                <i class="fas fa-heart text-danger"></i> {{ __('My Favorites') }}
             </h2>
         </div>
     </div>
@@ -14,10 +14,10 @@
     <div class="row" id="favoritesContainer">
         <div class="col-12 text-center py-5" id="noFavorites">
             <i class="fas fa-heart-broken fa-5x text-muted mb-3"></i>
-            <h4 class="text-white">No favorites yet</h4>
-            <p class="text-white">Start adding cars to your favorites by clicking the heart icon</p>
+            <h4 class="text-white">{{ __('No favorites yet') }}</h4>
+            <p class="text-white">{{ __('Start adding cars to your favorites by clicking the heart icon') }}</p>
             <a href="{{ route('home') }}" class="btn btn-primary mt-3">
-                <i class="fas fa-car"></i> Browse Cars
+                <i class="fas fa-car"></i> {{ __('Browse Cars') }}
             </a>
         </div>
     </div>
@@ -55,7 +55,7 @@ $(document).ready(function() {
             $('#favoritesContainer').html(`
                 <div class="col-12">
                     <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle"></i> Failed to load favorites
+                        <i class="fas fa-exclamation-triangle"></i> {{ __('Failed to load favorites') }}
                     </div>
                 </div>
             `);
@@ -82,7 +82,7 @@ $(document).ready(function() {
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h5 class="card-title text-light mb-0">${car.brand} ${car.model}</h5>
-                                <button class="btn btn-link text-danger p-0 remove-favorite" data-car-id="${car.id}" title="Remove from favorites">
+                                <button class="btn btn-link text-danger p-0 remove-favorite" data-car-id="${car.id}" title="{{ __('Remove from favorites') }}">
                                     <i class="fas fa-heart fa-lg"></i>
                                 </button>
                             </div>
@@ -102,7 +102,7 @@ $(document).ready(function() {
                             <p class="card-text">${car.description.substring(0, 100)}${car.description.length > 100 ? '...' : ''}</p>
                             
                             <a href="/cars/${car.id}" class="btn btn-primary w-100">
-                                View Details
+                                {{ __('View Details') }}
                             </a>
                         </div>
                     </div>

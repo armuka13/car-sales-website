@@ -6,10 +6,10 @@
     <div class="container">
         <div class="row text-center">
             <div class="col-md-6">
-                <i class="fas fa-envelope"></i> Email: <strong>{{ $settings->email }}</strong>
+                <i class="fas fa-envelope"></i> {{ __('Email') }}: <strong>{{ $settings->email }}</strong>
             </div>
             <div class="col-md-6">
-                <i class="fas fa-phone"></i> Phone: <strong>{{ $settings->phone }}</strong>
+                <i class="fas fa-phone"></i> {{ __('Phone') }}: <strong>{{ $settings->phone }}</strong>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
                                     <button type="button" data-bs-target="#carImageCarousel" data-bs-slide-to="{{ $index }}" 
                                         class="{{ $index === 0 ? 'active' : '' }}" 
                                         aria-current="{{ $index === 0 ? 'true' : 'false' }}" 
-                                        aria-label="Slide {{ $index + 1 }}"></button>
+                                        aria-label="{{ __('Slide') }} {{ $index + 1 }}"></button>
                                 @endforeach
                             </div>
                             <div class="carousel-inner rounded-start">
@@ -57,11 +57,11 @@
                             @if(count($allImages) > 1)
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
+                                    <span class="visually-hidden">{{ __('Previous') }}</span>
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
+                                    <span class="visually-hidden">{{ __('Next') }}</span>
                                 </button>
                             @endif
                         </div>
@@ -77,7 +77,7 @@
                     <div class="p-4 p-lg-5">
                         <!-- Title and Price -->
                         <h1 class="display-5 mb-3">{{ $car->brand }} {{ $car->model }}</h1>
-                        <h2 class="price-tag mb-4" style="font-size: 2.5rem;">${{ number_format($car->price, 0) }}</h2>
+                        <h2 class="price-tag mb-4" style="font-size: 2.5rem;">{{ number_format($car->price, 0) }} €</h2>
 
                         <!-- Primary Badges -->
                         <div class="mb-4">
@@ -103,7 +103,7 @@
                         <!-- Specifications Grid -->
                         <div class="specifications-grid mb-4">
                             <h5 class="mb-3 text-uppercase" style="letter-spacing: 1px; color: #ffc107;">
-                                <i class="fas fa-cog me-2"></i>Specifications
+                                <i class="fas fa-cog me-2"></i>{{ __('Specifications') }}
                             </h5>
                             
                             <div class="row g-3">
@@ -111,7 +111,7 @@
                                     <div class="col-6">
                                         <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
                                             <i class="fas fa-tachometer-alt text-warning mb-2"></i>
-                                            <div class="small text-white">Mileage</div>
+                                            <div class="small text-white">{{ __('Mileage') }}</div>
                                             <div class="fw-bold">{{ number_format($car->mileage) }} km</div>
                                         </div>
                                     </div>
@@ -121,7 +121,7 @@
                                     <div class="col-6">
                                         <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
                                             <i class="fas fa-bolt text-danger mb-2"></i>
-                                            <div class="small text-white">Power</div>
+                                            <div class="small text-white">{{ __('Power') }}</div>
                                             <div class="fw-bold">{{ $car->performance }} kW ({{ ceil($car->performance * 1.34) }} HP)</div>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
                                     <div class="col-6">
                                         <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
                                             <i class="fas fa-gas-pump text-info mb-2"></i>
-                                            <div class="small text-white">Consumption</div>
+                                            <div class="small text-white">{{ __('Consumption') }}</div>
                                             <div class="fw-bold">{{ $car->consumption }} l/100km</div>
                                         </div>
                                     </div>
@@ -141,8 +141,8 @@
                                     <div class="col-6">
                                         <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
                                             <i class="fas fa-users text-primary mb-2"></i>
-                                            <div class="small text-white">Seats</div>
-                                            <div class="fw-bold">{{ $car->number_of_seats }} Seats</div>
+                                            <div class="small text-white">{{ __('Seats') }}</div>
+                                            <div class="fw-bold">{{ $car->number_of_seats }} {{ __('Seats') }}</div>
                                         </div>
                                     </div>
                                 @endif
@@ -151,7 +151,7 @@
                                     <div class="col-6">
                                         <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
                                             <i class="fas fa-palette text-success mb-2"></i>
-                                            <div class="small text-white">Color</div>
+                                            <div class="small text-white">{{ __('Color') }}</div>
                                             <div class="fw-bold">{{ ucfirst($car->color) }}</div>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                 <div class="col-6">
                                     <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
                                         <i class="fas fa-calendar text-warning mb-2"></i>
-                                        <div class="small text-white">Year</div>
+                                        <div class="small text-white">{{ __('Year') }}</div>
                                         <div class="fw-bold">{{ $car->year }}</div>
                                     </div>
                                 </div>
@@ -172,11 +172,11 @@
                         <!-- Contact CTA -->
                         <div class="contact-cta p-4 bg-gradient rounded mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                             <h5 class="mb-3">
-                                <i class="fas fa-handshake me-2"></i>Interested in this car?
+                                <i class="fas fa-handshake me-2"></i>{{ __('Interested in this car?') }}
                             </h5>
                             <p class="mb-2">
                                 <p class="text-white text-decoration-none">
-                                    <strong>Car ID: </strong>{{ str_pad($car->id, 6, '0', STR_PAD_LEFT) }}
+                                    <strong>{{ __('Car ID:') }} </strong>{{ str_pad($car->id, 6, '0', STR_PAD_LEFT) }}
                                 </p>
                             </p>
                             <p class="mb-2">
@@ -200,7 +200,7 @@
             @if($car->description)
                 <div class="p-4 p-lg-5 border-top border-secondary">
                     <h4 class="mb-3 text-uppercase" style="letter-spacing: 1px; color: #ffc107;">
-                        <i class="fas fa-info-circle me-2"></i>Description
+                        <i class="fas fa-info-circle me-2"></i>{{ __('Description') }}
                     </h4>
                     <p class="lead" style="line-height: 1.8;">{{ $car->description }}</p>
                 </div>
@@ -211,7 +211,7 @@
     <!-- Additional Actions -->
     <div class="mt-4 text-center">
         <a href="{{ route('home') }}" class="btn btn-lg btn-outline-light px-5">
-            <i class="fas fa-arrow-left me-2"></i>View More Cars
+            <i class="fas fa-arrow-left me-2"></i>{{ __('View More Cars') }}
         </a>
     </div>
 </div>
