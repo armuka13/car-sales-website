@@ -4,17 +4,24 @@
 @section('content')
 <div class="contact-bar">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-md-6">
+        <div class="row text-center align-items-center justify-content-center">
+            <div class="col-auto">
                 <i class="fas fa-envelope"></i> {{ __('Email') }}: 
                 <a href="mailto:{{ $settings->email }}" class="text-white text-decoration-none">
                     <strong>{{ $settings->email }}</strong>
                 </a>
             </div>
-            <div class="col-md-6">
+            <div class="col-auto">
                 <i class="fas fa-phone"></i> {{ __('Phone') }}: 
                 <a href="tel:{{ $settings->phone }}" class="text-white text-decoration-none">
                     <strong>{{ $settings->phone }}</strong>
+                </a>
+            </div>
+            <div class="col-auto">
+                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->phone) }}?text={{ urlencode('Hi, I\'m interested in') }}" 
+                    class="btn btn-success btn-sm" 
+                    target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
                 </a>
             </div>
         </div>
@@ -382,41 +389,49 @@
                     font-weight: 600;
                     padding: 5px 10px;
                 }
-                /* Pagination Styling */
+                /* Pagination Styling (compact, responsive) */
                 .pagination {
-                    gap: 5px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    padding: 0;
+                    margin: 0;
+                    list-style: none;
                 }
                 .page-item .page-link {
                     background-color: #212529 !important;
-                    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-                    color: rgba(255, 255, 255, 0.8) !important;
-                    padding: 10px 18px;
-                    border-radius: 8px !important;
-                    transition: all 0.3s ease;
-                    display: flex;
+                    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+                    color: rgba(255, 255, 255, 0.85) !important;
+                    padding: 6px 10px;
+                    font-size: 0.9rem;
+                    border-radius: 6px !important;
+                    transition: all 0.18s ease;
+                    display: inline-flex;
                     align-items: center;
                     justify-content: center;
+                    min-width: 38px;
                 }
                 .page-item.active .page-link {
                     background-color: #e54b18 !important;
                     border-color: #e54b18 !important;
                     color: #fff !important;
-                    box-shadow: 0 4px 15px rgba(229, 75, 24, 0.3);
+                    box-shadow: 0 6px 18px rgba(229, 75, 24, 0.18);
                 }
                 .page-item.disabled .page-link {
-                    background-color: rgba(255, 255, 255, 0.05) !important;
-                    color: rgba(255, 255, 255, 0.3) !important;
+                    background-color: rgba(255, 255, 255, 0.03) !important;
+                    color: rgba(255, 255, 255, 0.35) !important;
+                    pointer-events: none;
                 }
                 .page-link:hover:not(.active) {
-                    background-color: rgba(229, 75, 24, 0.1) !important;
+                    background-color: rgba(229, 75, 24, 0.08) !important;
                     border-color: #e54b18 !important;
                     color: #e54b18 !important;
                 }
-                
+
                 /* Fix massive SVG icons in default pagination */
                 .pagination svg {
-                    width: 1.25rem !important;
-                    height: 1.25rem !important;
+                    width: 1rem !important;
+                    height: 1rem !important;
                     display: inline-block;
                 }
                 
@@ -449,6 +464,7 @@
                         flex: 0 0 200px;
                     }
                 }
+                
             </style>
         </div>
     </div>

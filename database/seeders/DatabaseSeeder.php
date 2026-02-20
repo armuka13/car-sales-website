@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'FAHRZONE',
             'email' => 'example@fahrzone.com',
             'phone' => '+49 694 1423 4567',
+            'whatsapp' => '+49 694 1423 4567',
         ]);
     }
 }

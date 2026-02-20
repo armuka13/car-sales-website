@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('phone');
+            $table->string('whatsapp');            
             $table->string('image')->nullable(); // Add this if you want the hero image
             $table->text('description')->nullable(); // Add this for the hero description
             $table->timestamps();

@@ -14,6 +14,7 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('email');
                 $table->string('phone');
+                $table->string('whatsapp');
                 $table->string('image');
                 $table->string('description');
                 $table->timestamps();

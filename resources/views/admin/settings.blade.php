@@ -29,7 +29,7 @@
                 <div class="mb-3">
                     <label class="form-label">{{ __('Contact Email *') }}</label>
                     <input type="email" name="email" class="form-control bg-dark text-white @error('email') is-invalid @enderror" 
-                           value="{{ old('email', $settings->email) }}" required>
+                           value="{{ old('email', $settings->email) }}">
                     @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 
@@ -38,6 +38,13 @@
                     <input type="text" name="phone" class="form-control bg-dark text-white @error('phone') is-invalid @enderror" 
                            value="{{ old('phone', $settings->phone) }}" required>
                     @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">{{ __('WhatsApp Number *') }}</label>
+                    <input type="text" name="whatsapp" class="form-control bg-dark text-white @error('whatsapp') is-invalid @enderror" 
+                           value="{{ old('whatsapp', $settings->whatsapp) }}">
+                    @error('whatsapp')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 
                 <div class="mb-3">
@@ -55,7 +62,7 @@
                 <div class="mb-3">
                     <label class="form-label">{{ __('Page Description *') }}</label>
                     <input type="text" name="description" class="form-control bg-dark text-white @error('description') is-invalid @enderror" 
-                           value="{{ old('description', $settings->description) }}" required>
+                           value="{{ old('description', $settings->description) }}" >
                     @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 

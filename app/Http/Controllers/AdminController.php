@@ -170,10 +170,11 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'nullable|email',
             'phone' => 'required|string',
+            'whatsapp' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
         ]);
 
         $settings = SiteSetting::first();

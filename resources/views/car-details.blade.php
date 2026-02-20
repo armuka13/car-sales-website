@@ -2,18 +2,7 @@
 @section('title', $car->brand . ' ' . $car->model . ' - ' . $settings->name)
 
 @section('content')
-<div class="contact-bar">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-6">
-                <i class="fas fa-envelope"></i> {{ __('Email') }}: <strong>{{ $settings->email }}</strong>
-            </div>
-            <div class="col-md-6">
-                <i class="fas fa-phone"></i> {{ __('Phone') }}: <strong>{{ $settings->phone }}</strong>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="container my-5">
 
@@ -188,6 +177,14 @@
                             <p class="mb-0">
                                 <i class="fas fa-phone me-2"></i>
                                 <a href="tel:{{ $settings->phone }}" class="text-white text-decoration-none">
+                                    {{ $settings->phone }}
+                                </a>
+                            </p>
+                            <p class="mb-0 mt-2">
+                                <i class="fab fa-whatsapp me-2"></i>
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->phone) }}?text={{ urlencode('Hi, I\'m interested in your cars') }}" 
+                                class="text-white text-decoration-none" 
+                                target="_blank">
                                     {{ $settings->phone }}
                                 </a>
                             </p>
