@@ -182,11 +182,12 @@
                             </p>
                             <p class="mb-0 mt-2">
                                 <i class="fab fa-whatsapp me-2"></i>
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->phone) }}?text={{ urlencode('Hi, I\'m interested in your cars') }}" 
-                                class="text-white text-decoration-none" 
-                                target="_blank">
+                                <span 
+                                    onclick="navigator.clipboard.writeText('{{ $settings->phone }}').then(() => alert('Phone number copied!'))"
+                                    class="text-white" 
+                                    style="cursor: pointer;">
                                     {{ $settings->phone }}
-                                </a>
+                                </span>
                             </p>
                         </div>
                     </div>

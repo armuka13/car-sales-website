@@ -18,11 +18,11 @@
                 </a>
             </div>
             <div class="col-auto">
-                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->phone) }}?text={{ urlencode('Hi, I\'m interested in') }}" 
-                    class="btn btn-success btn-sm" 
-                    target="_blank">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
+                <button 
+                    onclick="navigator.clipboard.writeText('{{ $settings->phone }}').then(() => alert('Phone number copied!'))"
+                    class="btn btn-success btn-sm">
+                    <i class="fab fa-whatsapp"></i> {{ $settings->phone }}
+                </button>
             </div>
         </div>
     </div>
