@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
     public function showLoginForm()
     {
         $settings = SiteSetting::first();
-        return view('auth.login',compact('settings'));
+        return view('auth.login', compact('settings'));
     }
 
     public function login(Request $request)
@@ -21,6 +22,19 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
+
+        // hCaptcha verification
+        $captcha = Http::asForm()->post('https://hcaptcha.com/siteverify', [
+            'secret' => config('services.hcaptcha.secret_key'),
+            'response' => $request->input('h-captcha-response'),
+        ]);
+
+        if (!$captcha->json('success')) {
+            return back()->withErrors([
+                'captcha' => 'Please complete the captcha.',
+            ])->onlyInput('email');
+        }
+
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();

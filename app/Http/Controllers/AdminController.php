@@ -98,21 +98,23 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($car->image);
             }
             $validated['image'] = $request->file('image')->store('cars', 'public');
-        } else {
+        }
+        else {
             unset($validated['image']);
         }
 
         // Handle multiple images
         if ($request->hasFile('images')) {
             $imagePaths = $car->images ?? []; // Keep existing images
-            
+
             foreach ($request->file('images') as $image) {
                 if (count($imagePaths) < 10) { // Limit to 10 images
                     $imagePaths[] = $image->store('cars', 'public');
                 }
             }
             $validated['images'] = $imagePaths;
-        } else {
+        }
+        else {
             unset($validated['images']);
         }
 
@@ -124,20 +126,20 @@ class AdminController extends Controller
     public function deleteImage(Car $car, $index)
     {
         $images = $car->images ?? [];
-        
+
         if (isset($images[$index])) {
             // Delete the file from storage
             Storage::disk('public')->delete($images[$index]);
-            
+
             // Remove from array
             array_splice($images, $index, 1);
-            
+
             // Update car
             $car->update(['images' => array_values($images)]); // Re-index array
-            
+
             return response()->json(['success' => true]);
         }
-        
+
         return response()->json(['success' => false], 404);
     }
 
@@ -147,14 +149,14 @@ class AdminController extends Controller
         if ($car->image) {
             Storage::disk('public')->delete($car->image);
         }
-        
+
         // Delete all additional images
         if ($car->images) {
             foreach ($car->images as $image) {
                 Storage::disk('public')->delete($image);
             }
         }
-        
+
         $car->delete();
 
         return redirect()->route('admin.dashboard')->with('success', 'Car deleted successfully!');
@@ -175,6 +177,8 @@ class AdminController extends Controller
             'whatsapp' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
+            'impressum' => 'nullable|string',
+            'datenschutz' => 'nullable|string',
         ]);
 
         $settings = SiteSetting::first();
@@ -184,10 +188,11 @@ class AdminController extends Controller
             if ($settings->image) {
                 Storage::disk('public')->delete($settings->image);
             }
-            
+
             // Store new image
             $validated['image'] = $request->file('image')->store('settings', 'public');
-        } else {
+        }
+        else {
             // Remove image from validated array if no new image uploaded
             unset($validated['image']);
         }

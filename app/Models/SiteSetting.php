@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class SiteSetting extends Model
 {
     protected $fillable = [
-        'name', 
-        'email', 
-        'phone', 
-        'whatsapp', 
-        'image', 
-        'description'
-        ];
+        'name',
+        'email',
+        'phone',
+        'whatsapp',
+        'image',
+        'description',
+        'impressum',
+        'datenschutz'
+    ];
 }

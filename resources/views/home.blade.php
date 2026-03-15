@@ -152,7 +152,7 @@
 
                     <!-- Search Button -->
                     <div class="col-12 col-md-3 d-flex align-items-end">
-                        <button type="submit" id="searchBtn" class="btn btn-orange w-100" style="padding: 10px;">
+                        <button type="submit" id="searchBtn" class="btn btn-color w-100" style="padding: 10px;">
                             <i class="fas fa-search me-2"></i>{{ __('Search') }} (<span id="searchBtnCount">{{ $cars->total() }}</span>)
                         </button>
                     </div>
@@ -172,7 +172,7 @@
                             </div>
                             
                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                <button type="button" id="resetFiltersMobile" class="btn btn-link text-orange text-decoration-none small p-0" title="{{ __('Reset Filters') }}">
+                                <button type="button" id="resetFiltersMobile" class="btn btn-link text-color text-decoration-none small p-0" title="{{ __('Reset Filters') }}">
                                     <i class="fas fa-undo me-1"></i> {{ __('Reset') }}
                                 </button>
                             </div>
@@ -189,7 +189,7 @@
                         </div>
                         
                         <div class="d-flex align-items-center">
-                            <button type="button" id="resetFilters" class="btn btn-link text-orange text-decoration-none small p-0" title="{{ __('Reset Filters') }}">
+                            <button type="button" id="resetFilters" class="btn btn-link text-color text-decoration-none small p-0" title="{{ __('Reset Filters') }}">
                                 <i class="fas fa-undo me-1"></i> {{ __('Reset Filters') }}
                             </button>
                         </div>
@@ -225,8 +225,12 @@
                     align-items: center;
                     justify-content: space-between;
                 }
-                .text-orange {
-                    color: #e54b18;
+                .text-color {
+                    color: #78e518;
+                }
+
+                .text-color:hover {
+                    color: #86ff1b;
                 }
                 
                 /* Category Tabs */
@@ -245,7 +249,7 @@
                     position: relative;
                 }
                 .category-tabs button.active {
-                    color: #e54b18; /* Orange active */
+                    color: #78e518; /* color active */
                 }
                 .category-tabs button.active::after {
                     content: '';
@@ -255,7 +259,7 @@
                     transform: translateX(-50%);
                     width: 100%;
                     height: 2px;
-                    background-color: #e54b18;
+                    background-color: #78e518;
                 }
                 .category-tabs .small-icon {
                     font-size: 0.6rem;
@@ -286,15 +290,15 @@
                     border: 1px solid #6f42c1; /* Purple border */
                 }
                 
-                /* Orange Search Button */
-                .btn-orange {
-                    background-color: #e54b18;
+                /* color Search Button */
+                .btn-color {
+                    background-color: #46870e;
                     color: white;
                     border: none;
                     font-size: 1.1rem;
                 }
-                .btn-orange:hover {
-                    background-color: #d14012;
+                .btn-color:hover {
+                    background-color: #6cd214;
                     color: white;
                 }
 
@@ -324,7 +328,7 @@
                 .section-header {
                     font-weight: 700;
                     letter-spacing: -0.5px;
-                    border-left: 5px solid #e54b18;
+                    border-left: 5px solid #78e518;
                     padding-left: 15px;
                     margin-bottom: 25px;
                 }
@@ -335,7 +339,7 @@
                     gap: 20px;
                     padding: 10px 0 25px 0;
                     scrollbar-width: thin;
-                    scrollbar-color: #e54b18 #212529;
+                    scrollbar-color: #58ab11 #212529;
                 }
                 
                 .horizontal-scroll-wrapper::-webkit-scrollbar {
@@ -343,7 +347,7 @@
                 }
                 
                 .horizontal-scroll-wrapper::-webkit-scrollbar-thumb {
-                    background: #e54b18;
+                    background: #78e518;
                     border-radius: 10px;
                 }
                 
@@ -362,7 +366,7 @@
                 .car-card:hover {
                     transform: translateY(-10px);
                     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-                    border-color: rgba(229, 75, 24, 0.5);
+                    border-color: rgba(76, 170, 14, 0.5);
                 }
                 
                 .car-card .car-image {
@@ -383,9 +387,9 @@
                 }
                 
                 .badge-premium {
-                    background: rgba(229, 75, 24, 0.2);
-                    color: #e54b18;
-                    border: 1px solid rgba(229, 75, 24, 0.3);
+                    background: #2a490e;
+                    color: #77ff00;
+                    border: 1px solid black;
                     font-weight: 600;
                     padding: 5px 10px;
                 }
@@ -412,8 +416,8 @@
                     min-width: 38px;
                 }
                 .page-item.active .page-link {
-                    background-color: #e54b18 !important;
-                    border-color: #e54b18 !important;
+                    background-color: #78e518 !important;
+                    border-color: #3b720b !important;
                     color: #fff !important;
                     box-shadow: 0 6px 18px rgba(229, 75, 24, 0.18);
                 }
@@ -424,8 +428,8 @@
                 }
                 .page-link:hover:not(.active) {
                     background-color: rgba(229, 75, 24, 0.08) !important;
-                    border-color: #e54b18 !important;
-                    color: #e54b18 !important;
+                    border-color: #78e518 !important;
+                    color: #78e518 !important;
                 }
 
                 /* Fix massive SVG icons in default pagination */
@@ -479,7 +483,7 @@
             <div id="topDealsSection" class="mb-5">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h3 class="section-header text-white">{{ __('Top Deals') }}</h3>
-                    <span class="text-orange small">{{ __('Hot picks for you') }}</span>
+                    <span class="text-color small">{{ __('Hot picks for you') }}</span>
                 </div>
                 <div class="horizontal-scroll-wrapper">
                     @php
@@ -487,7 +491,7 @@
                     @endphp
                     @foreach($topDeals as $deal)
                     <div class="car-item-horizontal">
-                        <div class="card car-card h-100">
+                        <div class="card car-card h-100 w-10">
                             <div class="position-absolute top-0 end-0 m-2 z-index-1">
                                 <span class="badge bg-danger">{{ __('HOT DEAL') }}</span>
                             </div>
@@ -504,7 +508,7 @@
             </div>
             @endif
 
-            <h2 class="section-header text-orange">{{ $isFiltered ? __('Search Results') : __('Available Cars') }}</h2>
+            <h2 class="section-header text-color">{{ $isFiltered ? __('Search Results') : __('Available Cars') }}</h2>
 
     <div class="row g-2" id="carsContainer">
         @include('partials.cars-grid', ['cars' => $cars])

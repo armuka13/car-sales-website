@@ -12,52 +12,60 @@
         <div class="card-body p-0">
             <div class="row g-0">
                 <!-- Image Carousel Section -->
-                <div class="col-lg-7">
+                <div class="col-lg-7 position-relative">
+                    @guest
+                    <button class="toggle-favorite" data-car-id="{{ $car->id }}" style="top: 20px; right: 20px;">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    @endguest
                     @php
-                        $allImages = [];
-                        if ($car->image) {
-                            $allImages[] = $car->image;
-                        }
-                        if ($car->images && count($car->images) > 0) {
-                            $allImages = array_merge($allImages, $car->images);
-                        }
+                    $allImages = [];
+                    if ($car->image) {
+                    $allImages[] = $car->image;
+                    }
+                    if ($car->images && count($car->images) > 0) {
+                    $allImages = array_merge($allImages, $car->images);
+                    }
                     @endphp
 
                     @if(count($allImages) > 0)
-                        <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-indicators">
-                                @foreach($allImages as $index => $image)
-                                    <button type="button" data-bs-target="#carImageCarousel" data-bs-slide-to="{{ $index }}" 
-                                        class="{{ $index === 0 ? 'active' : '' }}" 
-                                        aria-current="{{ $index === 0 ? 'true' : 'false' }}" 
-                                        aria-label="{{ __('Slide') }} {{ $index + 1 }}"></button>
-                                @endforeach
-                            </div>
-                            <div class="carousel-inner rounded-start">
-                                @foreach($allImages as $index => $image)
-                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <img src="{{ Str::startsWith($image, 'http') ? $image : asset('storage/' . $image) }}"
-                                             class="d-block w-100 car-detail-image" 
-                                             alt="{{ $car->brand }} {{ $car->model }} - Image {{ $index + 1 }}"
-                                             style="max-height: 600px; object-fit: cover;">
-                                    </div>
-                                @endforeach
-                            </div>
-                            @if(count($allImages) > 1)
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">{{ __('Previous') }}</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">{{ __('Next') }}</span>
-                                </button>
-                            @endif
+                    <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @foreach($allImages as $index => $image)
+                            <button type="button" data-bs-target="#carImageCarousel" data-bs-slide-to="{{ $index }}"
+                                class="{{ $index === 0 ? 'active' : '' }}"
+                                aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                                aria-label="{{ __('Slide') }} {{ $index + 1 }}"></button>
+                            @endforeach
                         </div>
+                        <div class="carousel-inner rounded-start">
+                            @foreach($allImages as $index => $image)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <img src="{{ Str::startsWith($image, 'http') ? $image : asset('storage/' . $image) }}"
+                                    class="d-block w-100 car-detail-image"
+                                    alt="{{ $car->brand }} {{ $car->model }} - Image {{ $index + 1 }}"
+                                    style="max-height: 600px; object-fit: cover;">
+                            </div>
+                            @endforeach
+                        </div>
+                        @if(count($allImages) > 1)
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">{{ __('Previous') }}</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">{{ __('Next') }}</span>
+                        </button>
+                        @endif
+                    </div>
                     @else
-                        <div class="bg-secondary d-flex align-items-center justify-content-center rounded-start" style="height: 600px;">
-                            <i class="fas fa-car fa-5x text-white"></i>
-                        </div>
+                    <div class="bg-secondary d-flex align-items-center justify-content-center rounded-start"
+                        style="height: 600px;">
+                        <i class="fas fa-car fa-5x text-white"></i>
+                    </div>
                     @endif
                 </div>
 
@@ -70,22 +78,27 @@
 
                         <!-- Primary Badges -->
                         <div class="mb-4">
-                            <span class="badge bg-primary badge-custom me-2 mb-2" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                            <span class="badge bg-primary badge-custom me-2 mb-2"
+                                style="font-size: 1rem; padding: 0.5rem 1rem;">
                                 {{ ucfirst($car->condition) }}
                             </span>
-                            <span class="badge bg-info badge-custom me-2 mb-2" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                            <span class="badge bg-info badge-custom me-2 mb-2"
+                                style="font-size: 1rem; padding: 0.5rem 1rem;">
                                 {{ $car->year }}
                             </span>
-                            <span class="badge bg-warning text-dark badge-custom me-2 mb-2" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                            <span class="badge bg-warning text-dark badge-custom me-2 mb-2"
+                                style="font-size: 1rem; padding: 0.5rem 1rem;">
                                 {{ ucfirst($car->transmission) }}
                             </span>
-                            <span class="badge bg-success badge-custom me-2 mb-2" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                            <span class="badge bg-success badge-custom me-2 mb-2"
+                                style="font-size: 1rem; padding: 0.5rem 1rem;">
                                 {{ ucfirst($car->fuel_type) }}
                             </span>
                             @if($car->category)
-                                <span class="badge bg-danger badge-custom me-2 mb-2" style="font-size: 1rem; padding: 0.5rem 1rem;">
-                                    {{ $car->category }}
-                                </span>
+                            <span class="badge bg-danger badge-custom me-2 mb-2"
+                                style="font-size: 1rem; padding: 0.5rem 1rem;">
+                                {{ $car->category }}
+                            </span>
                             @endif
                         </div>
 
@@ -94,59 +107,60 @@
                             <h5 class="mb-3 text-uppercase" style="letter-spacing: 1px; color: #ffc107;">
                                 <i class="fas fa-cog me-2"></i>{{ __('Specifications') }}
                             </h5>
-                            
+
                             <div class="row g-3">
                                 @if($car->mileage!==null)
-                                    <div class="col-6">
-                                        <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
-                                            <i class="fas fa-tachometer-alt text-warning mb-2"></i>
-                                            <div class="small text-white">{{ __('Mileage') }}</div>
-                                            <div class="fw-bold">{{ number_format($car->mileage) }} km</div>
-                                        </div>
+                                <div class="col-6">
+                                    <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
+                                        <i class="fas fa-tachometer-alt text-warning mb-2"></i>
+                                        <div class="small text-white">{{ __('Mileage') }}</div>
+                                        <div class="fw-bold">{{ number_format($car->mileage) }} km</div>
                                     </div>
+                                </div>
                                 @endif
 
                                 @if($car->performance)
-                                    <div class="col-6">
-                                        <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
-                                            <i class="fas fa-bolt text-danger mb-2"></i>
-                                            <div class="small text-white">{{ __('Power') }}</div>
-                                            <div class="fw-bold">{{ $car->performance }} kW ({{ ceil($car->performance * 1.34) }} HP)</div>
-                                        </div>
+                                <div class="col-6">
+                                    <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
+                                        <i class="fas fa-bolt text-danger mb-2"></i>
+                                        <div class="small text-white">{{ __('Power') }}</div>
+                                        <div class="fw-bold">{{ $car->performance }} kW ({{ ceil($car->performance *
+                                            1.34) }} HP)</div>
                                     </div>
+                                </div>
                                 @endif
 
                                 @if($car->consumption)
-                                    <div class="col-6">
-                                        <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
-                                            <i class="fas fa-gas-pump text-info mb-2"></i>
-                                            <div class="small text-white">{{ __('Consumption') }}</div>
-                                            <div class="fw-bold">{{ $car->consumption }} l/100km</div>
-                                        </div>
+                                <div class="col-6">
+                                    <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
+                                        <i class="fas fa-gas-pump text-info mb-2"></i>
+                                        <div class="small text-white">{{ __('Consumption') }}</div>
+                                        <div class="fw-bold">{{ $car->consumption }} l/100km</div>
                                     </div>
+                                </div>
                                 @endif
 
                                 @if($car->number_of_seats)
-                                    <div class="col-6">
-                                        <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
-                                            <i class="fas fa-users text-primary mb-2"></i>
-                                            <div class="small text-white">{{ __('Seats') }}</div>
-                                            <div class="fw-bold">{{ $car->number_of_seats }} {{ __('Seats') }}</div>
-                                        </div>
+                                <div class="col-6">
+                                    <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
+                                        <i class="fas fa-users text-primary mb-2"></i>
+                                        <div class="small text-white">{{ __('Seats') }}</div>
+                                        <div class="fw-bold">{{ $car->number_of_seats }} {{ __('Seats') }}</div>
                                     </div>
+                                </div>
                                 @endif
 
                                 @if($car->color)
-                                    <div class="col-6">
-                                        <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
-                                            <i class="fas fa-palette text-success mb-2"></i>
-                                            <div class="small text-white">{{ __('Color') }}</div>
-                                            <div class="fw-bold">{{ ucfirst($car->color) }}</div>
-                                        </div>
+                                <div class="col-6">
+                                    <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
+                                        <i class="fas fa-palette text-success mb-2"></i>
+                                        <div class="small text-white">{{ __('Color') }}</div>
+                                        <div class="fw-bold">{{ ucfirst($car->color) }}</div>
                                     </div>
+                                </div>
                                 @endif
 
-                           
+
 
                                 <div class="col-6">
                                     <div class="spec-item p-3 bg-secondary bg-opacity-25 rounded">
@@ -159,14 +173,15 @@
                         </div>
 
                         <!-- Contact CTA -->
-                        <div class="contact-cta p-4 bg-gradient rounded mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="contact-cta p-4 bg-gradient rounded mb-4"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                             <h5 class="mb-3">
                                 <i class="fas fa-handshake me-2"></i>{{ __('Interested in this car?') }}
                             </h5>
                             <p class="mb-2">
-                                <p class="text-white text-decoration-none">
-                                    <strong>{{ __('Car ID:') }} </strong>{{ str_pad($car->id, 6, '0', STR_PAD_LEFT) }}
-                                </p>
+                            <p class="text-white text-decoration-none">
+                                <strong>{{ __('Car ID:') }} </strong>{{ str_pad($car->id, 6, '0', STR_PAD_LEFT) }}
+                            </p>
                             </p>
                             <p class="mb-2">
                                 <i class="fas fa-envelope me-2"></i>
@@ -182,10 +197,9 @@
                             </p>
                             <p class="mb-0 mt-2">
                                 <i class="fab fa-whatsapp me-2"></i>
-                                <span 
+                                <span
                                     onclick="navigator.clipboard.writeText('{{ $settings->phone }}').then(() => alert('Phone number copied!'))"
-                                    class="text-white" 
-                                    style="cursor: pointer;">
+                                    class="text-white" style="cursor: pointer;">
                                     {{ $settings->phone }}
                                 </span>
                             </p>
@@ -196,12 +210,12 @@
 
             <!-- Description Section -->
             @if($car->description)
-                <div class="p-4 p-lg-5 border-top border-secondary">
-                    <h4 class="mb-3 text-uppercase" style="letter-spacing: 1px; color: #ffc107;">
-                        <i class="fas fa-info-circle me-2"></i>{{ __('Description') }}
-                    </h4>
-                    <p class="lead" style="line-height: 1.8;">{{ $car->description }}</p>
-                </div>
+            <div class="p-4 p-lg-5 border-top border-secondary">
+                <h4 class="mb-3 text-uppercase" style="letter-spacing: 1px; color: #ffc107;">
+                    <i class="fas fa-info-circle me-2"></i>{{ __('Description') }}
+                </h4>
+                <p class="lead" style="line-height: 1.8;">{{ $car->description }}</p>
+            </div>
             @endif
         </div>
     </div>
@@ -267,20 +281,21 @@
 </style>
 @section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const carId = {{ $car->id }};
-        let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-        
-        // Remove if already exists to move to front
-        recentlyViewed = recentlyViewed.filter(id => id !== carId);
-        
-        // Add to front
-        recentlyViewed.unshift(carId);
-        
-        // Keep only top 10
-        recentlyViewed = recentlyViewed.slice(0, 10);
-        
-        localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+    document.addEventListener('DOMContentLoaded', function () {
+        const carId = {{ $car-> id
+    }};
+    let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+
+    // Remove if already exists to move to front
+    recentlyViewed = recentlyViewed.filter(id => id !== carId);
+
+    // Add to front
+    recentlyViewed.unshift(carId);
+
+    // Keep only top 10
+    recentlyViewed = recentlyViewed.slice(0, 10);
+
+    localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
     });
 </script>
 @endsection

@@ -1,34 +1,79 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Car Sales')</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #2a333dff;
         }
-        .navbar-brand { font-weight: bold; font-size: 1.5rem; }
-        .car-card { transition: transform 0.3s; margin-bottom: 30px; }
-        .car-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .car-image { height: 250px; object-fit: cover; width: 100%; }
-        .price-tag { color: #28a745; font-size: 1.5rem; font-weight: bold; }
-        .contact-bar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 0; }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .car-card {
+            transition: transform 0.3s;
+            margin-bottom: 30px;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .car-image {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .price-tag {
+            color: #28a745;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .contact-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 0;
+        }
+
         .hero {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
             padding: 150px 0;
             position: relative;
             min-height: 500px;
             width: 100%;
             text-align: center;
+
         }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+
 
         .hero-overlay {
             position: absolute;
@@ -57,6 +102,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -71,10 +117,19 @@
                 background-attachment: scroll;
             }
         }
-        
-        .badge-custom { padding: 8px 12px; border-radius: 20px; }
-        footer { background-color: #2c3e50; color: white; padding: 40px 0; margin-top: 60px; }
-        
+
+        .badge-custom {
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
         /* Favorites styling */
         .toggle-favorite {
             position: absolute;
@@ -131,7 +186,7 @@
             font-weight: bold;
             padding: 0 5px;
         }
-        
+
         .carousel-control-prev-icon,
         .carousel-control-next-icon {
             background-color: rgba(0, 0, 0, 0.5);
@@ -155,6 +210,7 @@
     </style>
     @yield('styles')
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -170,38 +226,38 @@
                         <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
                     </li>
                     @guest
-                        <li class="nav-item favorites-badge">
-                            <a class="nav-link" href="{{ route('favorites') }}">
-                                <i class="fas fa-heart"></i> {{ __('Favorites') }}
-                            </a>
-                        </li>
+                    <li class="nav-item favorites-badge">
+                        <a class="nav-link" href="{{ route('favorites') }}">
+                            <i class="fas fa-heart"></i> {{ __('Favorites') }}
+                        </a>
+                    </li>
                     @endguest
-                    
+
                     @auth
-                        @if(auth()->user()->is_admin)
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.settings') }}">{{ __('Settings') }}</a>
-                            </li>
-                        @endif
-                        <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-link nav-link">{{ __('Logout') }}</button>
-                            </form>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Admin Login') }}</a>
-                        </li>
+                    @if(auth()->user()->is_admin)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.settings') }}">{{ __('Settings') }}</a>
+                    </li>
+                    @endif
+                    <li class="nav-item">
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-link nav-link">{{ __('Logout') }}</button>
+                        </form>
+                    </li>
                     @endauth
 
                     <li class="nav-item ms-3" style="margin-left:-10px; margin-top: 6px;">
                         <div class="btn-group" role="group" aria-label="Language switcher">
-                            <a href="{{ route('locale.switch', ['locale' => 'en']) }}" class="btn btn-sm btn-outline-light {{ app()->getLocale() === 'en' ? 'active' : '' }}"><img src="{{ asset('images/gb.png') }}" height=20; width=20;></a>
-                            <a href="{{ route('locale.switch', ['locale' => 'de']) }}" class="btn btn-sm btn-outline-light {{ app()->getLocale() === 'de' ? 'active' : '' }}"><img src="{{ asset('images/de.png') }}" height=20; width=20; ></a>
+                            <a href="{{ route('locale.switch', ['locale' => 'en']) }}"
+                                class="btn btn-sm btn-outline-light {{ app()->getLocale() === 'en' ? 'active' : '' }}"><img
+                                    src="{{ asset('images/gb.png') }}" height=20; width=20;></a>
+                            <a href="{{ route('locale.switch', ['locale' => 'de']) }}"
+                                class="btn btn-sm btn-outline-light {{ app()->getLocale() === 'de' ? 'active' : '' }}"><img
+                                    src="{{ asset('images/de.png') }}" height=20; width=20;></a>
                         </div>
                     </li>
                 </ul>
@@ -213,13 +269,50 @@
 
     <footer>
         <div class="container text-center">
-            <p>&copy; 2026 {{ $settings->name }}</p>
+            <p class="mb-2">&copy; 2026 {{ $settings->name }}</p>
+            <div>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#impressumModal"
+                    class="text-white text-decoration-none me-4">IMPRESSUM</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#datenschutzModal"
+                    class="text-white text-decoration-none">DATENSCHUTZERKLÄRUNG</a>
+            </div>
         </div>
     </footer>
 
+    <!-- Impressum Modal -->
+    <div class="modal fade" id="impressumModal" tabindex="-1" aria-labelledby="impressumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content text-dark text-start">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="impressumModalLabel">IMPRESSUM</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {!! nl2br(e($settings->impressum)) !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div class="modal fade" id="datenschutzModal" tabindex="-1" aria-labelledby="datenschutzModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content text-dark text-start">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="datenschutzModalLabel">DATENSCHUTZERKLÄRUNG</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {!! nl2br(e($settings->datenschutz)) !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         // Global favorites functionality
         function updateFavoritesCount() {
@@ -236,7 +329,7 @@
         function toggleFavorite(carId) {
             let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
             const index = favorites.indexOf(carId);
-            
+
             if (index > -1) {
                 favorites.splice(index, 1);
                 $(`.toggle-favorite[data-car-id="${carId}"]`).removeClass('favorited');
@@ -244,23 +337,23 @@
                 favorites.push(carId);
                 $(`.toggle-favorite[data-car-id="${carId}"]`).addClass('favorited');
             }
-            
+
             localStorage.setItem('favorites', JSON.stringify(favorites));
             updateFavoritesCount();
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Update favorites count on page load
             updateFavoritesCount();
-            
+
             // Check which cars are favorited
             const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
             favorites.forEach(id => {
                 $(`.toggle-favorite[data-car-id="${id}"]`).addClass('favorited');
             });
-            
+
             // Toggle favorite on click
-            $(document).on('click', '.toggle-favorite', function(e) {
+            $(document).on('click', '.toggle-favorite', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 const carId = $(this).data('car-id');
@@ -268,7 +361,8 @@
             });
         });
     </script>
-    
+
     @yield('scripts')
 </body>
+
 </html>

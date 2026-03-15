@@ -7,32 +7,37 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::middleware([SetLocale::class])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/api/cars/search', [HomeController::class, 'searchAjax'])->name('cars.search');
-    Route::get('/api/cars/count', [HomeController::class, 'getCount'])->name('cars.count');
-    Route::get('/favorites', [HomeController::class, 'favorites'])->name('favorites');
-    Route::post('/api/cars/favorites', [HomeController::class, 'getFavorites'])->name('api.favorites');
-    Route::get('/cars/{car}', [HomeController::class, 'show'])->name('cars.show');
+    Route::get('/', [HomeController::class , 'index'])->name('home');
+    Route::get('/api/cars/search', [HomeController::class , 'searchAjax'])->name('cars.search');
+    Route::get('/api/cars/count', [HomeController::class , 'getCount'])->name('cars.count');
+    Route::get('/favorites', [HomeController::class , 'favorites'])->name('favorites');
+    Route::post('/api/cars/favorites', [HomeController::class , 'getFavorites'])->name('api.favorites');
+    Route::get('/cars/{car}', [HomeController::class , 'show'])->name('cars.show');
 
     Route::get('/locale/{locale}', function (string $locale) {
-        if (in_array($locale, ['en', 'de'], true)) {
-            session(['locale' => $locale]);
+            if (in_array($locale, ['en', 'de'], true)) {
+                session(['locale' => $locale]);
+            }
+
+            return back();
         }
+        )->name('locale.switch');
 
-        return back();
-    })->name('locale.switch');
+        // Secret Admin Login Route
+        Route::get('/portal-access-admin-login-159-753', [\App\Http\Controllers\Auth\LoginController::class , 'showLoginForm'])->name('login');
+        Route::post('/portal-access-admin-login-159-753', [\App\Http\Controllers\Auth\LoginController::class , 'login'])->middleware('throttle:5,1');
+        Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class , 'logout'])->name('logout');
 
-    Auth::routes(['register' => false]); // Disable registration
-
-    Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::get('/cars/create', [AdminController::class, 'create'])->name('admin.cars.create');
-        Route::post('/cars', [AdminController::class, 'store'])->name('admin.cars.store');
-        Route::get('/cars/{car}/edit', [AdminController::class, 'edit'])->name('admin.cars.edit');
-        Route::put('/cars/{car}', [AdminController::class, 'update'])->name('admin.cars.update');
-        Route::delete('/cars/{car}', [AdminController::class, 'destroy'])->name('admin.cars.destroy');
-        Route::delete('/cars/{car}/delete-image/{index}', [AdminController::class, 'deleteImage'])->name('admin.cars.delete-image');
-        Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
-        Route::put('/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
+        Route::middleware(['auth', 'admin'])->prefix('!admin-021405')->group(function () {
+            Route::get('/dashboard', [AdminController::class , 'dashboard'])->name('admin.dashboard');
+            Route::get('/cars/create', [AdminController::class , 'create'])->name('admin.cars.create');
+            Route::post('/cars', [AdminController::class , 'store'])->name('admin.cars.store');
+            Route::get('/cars/{car}/edit', [AdminController::class , 'edit'])->name('admin.cars.edit');
+            Route::put('/cars/{car}', [AdminController::class , 'update'])->name('admin.cars.update');
+            Route::delete('/cars/{car}', [AdminController::class , 'destroy'])->name('admin.cars.destroy');
+            Route::delete('/cars/{car}/delete-image/{index}', [AdminController::class , 'deleteImage'])->name('admin.cars.delete-image');
+            Route::get('/settings', [AdminController::class , 'settings'])->name('admin.settings');
+            Route::put('/settings', [AdminController::class , 'updateSettings'])->name('admin.settings.update');
+        }
+        );
     });
-});
