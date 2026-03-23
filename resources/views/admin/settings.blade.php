@@ -3,7 +3,7 @@
 @section('title', __('Site Settings'))
 
 @section('content')
-<div class="container my-5 text-white">
+<div class="container text-white" style="margin-top: 6rem;">
     <h2 class="mb-4">{{ __('Site Settings') }}</h2>
 
     @if(session('success'))

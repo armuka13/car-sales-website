@@ -3,7 +3,7 @@
 @section('title', __('Admin Dashboard'))
 
 @section('content')
-<div class="container my-5 text-white">
+<div class="container text-white" style="margin-top: 6rem;">
     <div class="row mb-4">
         <div class="col-md-8">
             <h2>{{ __('Admin Dashboard') }}</h2>
@@ -14,14 +14,14 @@
             </a>
         </div>
     </div>
-    
+
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     @endif
-    
+
     <div class="card bg-dark text-white">
         <div class="card-body">
             <table class="table table-dark table-hover text-white">
@@ -38,11 +38,13 @@
                     <tr>
                         <td>
                             @if($car->image)
-                                <img src="{{ Str::startsWith($car->image, 'http') ? $car->image : asset('storage/' . $car->image) }}" width="60" height="60" style="object-fit: cover;">
+                            <img src="{{ Str::startsWith($car->image, 'http') ? $car->image : asset('storage/' . $car->image) }}"
+                                width="60" height="60" style="object-fit: cover;">
                             @else
-                                <div style="width: 60px; height: 60px;" class="bg-secondary d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-car text-white"></i>
-                                </div>
+                            <div style="width: 60px; height: 60px;"
+                                class="bg-secondary d-flex align-items-center justify-content-center">
+                                <i class="fas fa-car text-white"></i>
+                            </div>
                             @endif
                         </td>
                         <td>{{ $car->brand }}</td>
@@ -54,7 +56,8 @@
                             <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $car->id }}">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <form id="delete-form-{{ $car->id }}" action="{{ route('admin.cars.destroy', $car) }}" method="POST" class="d-none">
+                            <form id="delete-form-{{ $car->id }}" action="{{ route('admin.cars.destroy', $car) }}"
+                                method="POST" class="d-none">
                                 @csrf
                                 @method('DELETE')
                             </form>
@@ -94,19 +97,19 @@
 
 @section('scripts')
 <script>
-$(document).ready(function() {
-    let deleteCarId = null;
+    $(document).ready(function () {
+        let deleteCarId = null;
 
-    $('.delete-btn').on('click', function() {
-        deleteCarId = $(this).data('id');
-        $('#deleteModal').modal('show');
-    });
+        $('.delete-btn').on('click', function () {
+            deleteCarId = $(this).data('id');
+            $('#deleteModal').modal('show');
+        });
 
-    $('#confirmDelete').on('click', function() {
-        if (deleteCarId) {
-            $('#delete-form-' + deleteCarId).submit();
-        }
+        $('#confirmDelete').on('click', function () {
+            if (deleteCarId) {
+                $('#delete-form-' + deleteCarId).submit();
+            }
+        });
     });
-});
 </script>
 @endsection
