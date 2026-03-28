@@ -23,12 +23,17 @@ Route::middleware([SetLocale::class])->group(function () {
         }
         )->name('locale.switch');
 
-        // Secret Admin Login Route
-        Route::get('/portal-access-admin-login-159-753', [\App\Http\Controllers\Auth\LoginController::class , 'showLoginForm'])->name('login');
-        Route::post('/portal-access-admin-login-159-753', [\App\Http\Controllers\Auth\LoginController::class , 'login'])->middleware('throttle:5,1');
+        // Secret Admin Login Route (Protected by Token)
+        Route::middleware(['admin_token'])->group(function () {
+            Route::get('/' . env('ADMIN_LOGIN_PATH', 'portal-access-admin-login-159-753'), [\App\Http\Controllers\Auth\LoginController::class , 'showLoginForm'])->name('login');
+            Route::post('/' . env('ADMIN_LOGIN_PATH', 'portal-access-admin-login-159-753'), [\App\Http\Controllers\Auth\LoginController::class , 'login'])->middleware('throttle:3,1');
+        }
+        );
+
         Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class , 'logout'])->name('logout');
 
-        Route::middleware(['auth', 'admin'])->prefix('!admin-021405')->group(function () {
+        // Admin Dashboard (Protected by Auth + Admin Role + Token)
+        Route::middleware(['auth', 'admin', 'admin_token'])->prefix(env('ADMIN_PREFIX', '!admin-021405'))->group(function () {
             Route::get('/dashboard', [AdminController::class , 'dashboard'])->name('admin.dashboard');
             Route::get('/cars/create', [AdminController::class , 'create'])->name('admin.cars.create');
             Route::post('/cars', [AdminController::class , 'store'])->name('admin.cars.store');

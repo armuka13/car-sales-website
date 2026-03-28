@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'admin_token' => \App\Http\Middleware\AdminTokenMiddleware::class,
         ]);
 
         $middleware->web(append: [

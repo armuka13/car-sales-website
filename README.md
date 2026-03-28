@@ -15,7 +15,7 @@ A modern, high-performance car sales platform built with Laravel 12. This projec
 -   **Favorites System**: Users can save their favorite cars for quick access.
 -   **Dynamic Car Gallery**: High-quality image support for car listings.
 -   **Admin Dashboard**: Full CRUD capabilities for car listings and site settings.
--   **Secure Admin Access**: Protected admin routes with a custom login portal.
+-   **Secure Admin Access**: Protected admin routes with a custom login portal and secret token verification.
 -   **Premium UI/UX**: Built with a blend of Bootstrap 5 and Tailwind CSS 4, featuring modern animations and glassmorphism.
 
 ---
@@ -73,22 +73,35 @@ composer run dev
 
 ---
 
-## Admin Access
+## Admin Access & Security
 
-The admin dashboard is located at a secure URL:
-`http://localhost:8000/portal-access-admin-login-159-753`
+The admin area is protected by three layers of security to keep it hidden from regular users:
+
+### 1. Secret Login Path
+The login page is located at a custom URL defined in your `.env`. 
+**Default**: `http://localhost:8000/portal-access-admin-login`
+
+### 2. Secret Token Verification (Ghost Mode)
+Even with the correct URL, the page will return a **404 Not Found** unless a valid secret token is provided in the URL query.
+**Usage**: `.../portal-access-admin-login?token=your-token-here`
+
+*Note: Once entered correctly, the token is saved in your session, so you don't need to include it in every click.*
+
+### 3. Configuration
+You can customize these values in your `.env` file:
+```bash
+ADMIN_LOGIN_PATH=portal-access-admin
+ADMIN_TOKEN=secret_token
+```
 
 ---
 
 ## Project Structure
 
 -   `app/Http/Controllers`: Contains the logic for Home and Admin management.
+-   `app/Http/Middleware`: Security middlewares (`AdminMiddleware`, `AdminTokenMiddleware`).
 -   `resources/views`: Blade templates for the frontend and admin panel.
 -   `routes/web.php`: Defines the web and API routes.
 -   `database/migrations`: Database schema definitions.
 
----
 
-## License
-
-This project is open-sourced software licensed under the [MIT license](LICENSE).
