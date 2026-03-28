@@ -1,4 +1,4 @@
-# 🚗 Car Sales Website
+# Car Sales Website
 
 [![Laravel Version](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com)
 [![PHP Version](https://img.shields.io/badge/PHP-8.2+-blue.svg)](https://php.net)
@@ -8,19 +8,19 @@ A modern, high-performance car sales platform built with Laravel 12. This projec
 
 ---
 
-## ✨ Key Features
+## Key Features
 
--   **🔍 Advanced AJAX Search**: Fast and responsive car searching without page reloads.
--   **🌍 Multi-Language Support**: Seamlessly switch between English and German.
--   **⭐ Favorites System**: Users can save their favorite cars for quick access.
--   **🖼️ Dynamic Car Gallery**: High-quality image support for car listings.
--   **🛠️ Admin Dashboard**: Full CRUD capabilities for car listings and site settings.
--   **🔒 Secure Admin Access**: Protected admin routes with a custom login portal.
--   **🎨 Premium UI/UX**: Built with a blend of Bootstrap 5 and Tailwind CSS 4, featuring modern animations and glassmorphism.
+-   **Advanced AJAX Search**: Fast and responsive car searching without page reloads.
+-   **Multi-Language Support**: Seamlessly switch between English and German.
+-   **Favorites System**: Users can save their favorite cars for quick access.
+-   **Dynamic Car Gallery**: High-quality image support for car listings.
+-   **Admin Dashboard**: Full CRUD capabilities for car listings and site settings.
+-   **Secure Admin Access**: Protected admin routes with a custom login portal.
+-   **Premium UI/UX**: Built with a blend of Bootstrap 5 and Tailwind CSS 4, featuring modern animations and glassmorphism.
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 -   **Backend**: [Laravel 12](https://laravel.com) (PHP 8.2+)
 -   **Frontend**: [Blade Templates](https://laravel.com/docs/blade), [Bootstrap 5](https://getbootstrap.com), [Tailwind CSS 4](https://tailwindcss.com)
@@ -30,7 +30,7 @@ A modern, high-performance car sales platform built with Laravel 12. This projec
 
 ---
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 Follow these steps to get the project running locally:
 
@@ -73,14 +73,14 @@ composer run dev
 
 ---
 
-## 🔑 Admin Access
+## Admin Access
 
 The admin dashboard is located at a secure URL:
 `http://localhost:8000/portal-access-admin-login-159-753`
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 -   `app/Http/Controllers`: Contains the logic for Home and Admin management.
 -   `resources/views`: Blade templates for the frontend and admin panel.
@@ -89,6 +89,6 @@ The admin dashboard is located at a secure URL:
 
 ---
 
-## 📄 License
+## License
 
 This project is open-sourced software licensed under the [MIT license](LICENSE).
